@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rithvika Devisetti</title>
+<meta name="description" content="Rithvika Devisetti — student developer and researcher building web apps, database research and community tech.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f4ee; --surface:#fffdf9; --ink:#1d1b18; --muted:#6b655c; --line:#e4ddd0;
+  --accent:#c2410c; --accent-soft:#fde8dc; --tag:#efe9df;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#141311; --surface:#1c1a17; --ink:#f1ece4; --muted:#a39b8f; --line:#2e2a25;
+    --accent:#fb923c; --accent-soft:#3a2416; --tag:#26231f; }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:16px/1.65 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+nav{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;justify-content:space-between;align-items:center;height:60px}
+.logo{font-family:Fraunces,serif;font-weight:700;font-size:20px;text-decoration:none}
+.logo span{color:var(--accent)}
+nav ul{display:flex;gap:22px;list-style:none;font-size:14px}
+nav ul a{text-decoration:none;color:var(--muted)} nav ul a:hover{color:var(--ink)}
+header.hero{padding:96px 0 72px}
+.kicker{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--accent);letter-spacing:.04em}
+h1{font-family:Fraunces,serif;font-weight:700;font-size:clamp(40px,7vw,76px);line-height:1.04;letter-spacing:-.02em;margin:14px 0 22px}
+h1 em{font-style:normal;color:var(--accent)}
+.lede{font-size:clamp(17px,2.1vw,20px);color:var(--muted);max-width:640px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:999px;font-weight:600;font-size:15px;text-decoration:none;border:1.5px solid var(--ink);transition:.15s}
+.btn.primary{background:var(--ink);color:var(--bg)}
+.btn:hover{transform:translateY(-1px)}
+section{padding:72px 0;border-top:1px solid var(--line)}
+h2{font-family:Fraunces,serif;font-size:clamp(28px,4vw,38px);font-weight:700;letter-spacing:-.01em;margin-bottom:8px}
+.sub{color:var(--muted);margin-bottom:36px;max-width:620px}
+.about-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:40px}
+.about-grid p+p{margin-top:14px}
+.facts{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px}
+.facts dt{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.facts dd{margin:2px 0 16px;font-weight:500}
+.facts dd:last-child{margin-bottom:0}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.filters button{font:500 14px Inter,sans-serif;padding:7px 15px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--muted);cursor:pointer}
+.filters button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;transition:.2s}
+.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.card.featured{grid-column:span 2}
+.card .cat{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--accent);margin-bottom:10px}
+.card h3{font-family:Fraunces,serif;font-size:22px;font-weight:700;margin-bottom:8px;line-height:1.2}
+.card p{color:var(--muted);font-size:15px;flex:1}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 14px}
+.tags span{font:500 12px "JetBrains Mono",monospace;background:var(--tag);padding:3px 9px;border-radius:6px}
+.card .link{font-size:14px;font-weight:600;text-decoration:none;color:var(--accent)}
+.card .link.private{color:var(--muted);font-weight:500}
+.hidden{display:none}
+.skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.skills div{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px}
+.skills h4{font-size:13px;font-family:"JetBrains Mono",monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;font-weight:500}
+.skills ul{list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.skills li{background:var(--tag);padding:4px 10px;border-radius:6px;font-size:14px}
+.contact{text-align:center}
+.contact .cta{justify-content:center}
+footer{padding:28px 0;color:var(--muted);font-size:13px;text-align:center;border-top:1px solid var(--line)}
+@media (max-width:720px){
+  nav ul{gap:14px;font-size:13px}
+  nav ul li:nth-child(3){display:none}
+  header.hero{padding:64px 0 48px}
+  .about-grid{grid-template-columns:1fr}
+  .card.featured{grid-column:auto}
+  .grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="logo" href="#">rithvika<span>.</span></a>
+  <ul><li><a href="#about">About</a></li><li><a href="#projects">Projects</a></li><li><a href="#skills">Skills</a></li><li><a href="#contact">Contact</a></li></ul>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <div class="kicker">// student · developer · researcher</div>
+  <h1>Hi, I'm Rithvika.<br>I build things that <em>help people</em>.</h1>
+  <p class="lede">I'm a high school student at North Creek High School in Bothell, WA. I build full-stack web apps for my community, run database performance experiments, and practice competitive programming.</p>
+  <div class="cta">
+    <a class="btn primary" href="#projects">See my work →</a>
+    <a class="btn" href="https://github.com/rithvika1221" target="_blank" rel="noopener">GitHub</a>
+    <a class="btn" href="https://www.linkedin.com/in/rithvika-devisetti-b92a70266" target="_blank" rel="noopener">LinkedIn</a>
+  </div>
+</div></header>
+
+<section id="about"><div class="wrap">
+  <h2>About me</h2>
+  <div class="about-grid">
+    <div>
+      <p>I like problems that sit where technology meets real people — a student who can't find their lost backpack, a teenager who needs a mental-health resource, a local shop that deserves more than a star rating.</p>
+      <p>Most of my projects are full-stack Next.js apps backed by PostgreSQL. I've also gone deeper into how databases behave under load: my research project measures and predicts logical-replication lag in PostgreSQL. Along the way I've sharpened my algorithms through USACO and Java/C++ practice.</p>
+    </div>
+    <dl class="facts">
+      <dt>School</dt><dd>North Creek High School, Bothell WA</dd>
+      <dt>Focus</dt><dd>Full-stack web · Databases · Algorithms</dd>
+      <dt>Currently</dt><dd>PostgreSQL replication research & community apps</dd>
+    </dl>
+  </div>
+</div></section>
+
+<section id="projects"><div class="wrap">
+  <h2>Projects</h2>
+  <p class="sub">A selection of what I've built and studied. Some repositories are private; ask me for a demo.</p>
+  <div class="filters" role="group" aria-label="Filter projects">
+    <button class="on" data-f="all">All</button>
+    <button data-f="web">Web apps</button>
+    <button data-f="research">Research</button>
+    <button data-f="algo">Algorithms</button>
+  </div>
+  <div class="grid">
+
+    <article class="card featured" data-c="research">
+      <div class="cat">Research · Databases</div>
+      <h3>Predicting Logical Replication Lag in PostgreSQL</h3>
+      <p>An independent research study of how PostgreSQL logical replication behaves under changing write throughput and network latency. I built a repeatable experiment matrix, measured publisher-side cost (CPU, WAL generation, commit latency) and subscriber lag over time, and used the data to train models that predict lag for early warning and capacity planning.</p>
+      <div class="tags"><span>PostgreSQL</span><span>Python</span><span>Shell</span><span>WAL analysis</span><span>ML</span></div>
+      <a class="link" href="https://github.com/rithvika1221/Postgres_Research" target="_blank" rel="noopener">View repository →</a>
+    </article>
+
+    <article class="card" data-c="web">
+      <div class="cat">Web app · Community</div>
+      <h3>MindMission</h3>
+      <p>A website for a youth mental-health initiative that brings workshops and awareness events into schools, and connects teens with counselors, helplines and trusted resources. Includes event registration and a light encouragement chatbot.</p>
+      <div class="tags"><span>Next.js</span><span>PostgreSQL</span><span>Google Sheets API</span></div>
+      <span class="link private">Private repository</span>
+    </article>
+
+    <article class="card" data-c="web">
+      <div class="cat">Web & iOS app · Local business</div>
+      <h3>ListingHub (Neighborly)</h3>
+      <p>A local business directory built around an ongoing relationship between businesses and their regulars — follows, updates and specials — instead of just star ratings. Includes a claim-your-listing flow, admin approval and an iOS build via Capacitor.</p>
+      <div class="tags"><span>Next.js</span><span>TypeScript</span><span>Capacitor</span><span>PostgreSQL</span></div>
+      <span class="link private">Private repository</span>
+    </article>
+
+    <article class="card" data-c="web">
+      <div class="cat">Web app · School</div>
+      <h3>ReturnPoint</h3>
+      <p>A lost-and-found system for schools. Students and staff sign in with Google or Facebook, report and search lost items with photos, and staff manage claims through role-based access.</p>
+      <div class="tags"><span>Next.js</span><span>PostgreSQL</span><span>OAuth</span></div>
+      <span class="link private">Private repository</span>
+    </article>
+
+    <article class="card" data-c="web">
+      <div class="cat">Web app · Storytelling</div>
+      <h3>Mythic Pathways</h3>
+      <p>An interactive storytelling site that retells mythology — starting with the Ramayana — as a series of illustrated story parts, backed by a Vercel Postgres data layer with parameterized SQL.</p>
+      <div class="tags"><span>Next.js</span><span>Vercel Postgres</span><span>SQL</span></div>
+      <span class="link private">Private repository</span>
+    </article>
+
+    <article class="card" data-c="web">
+      <div class="cat">Web app · Students</div>
+      <h3>GPA Calculator</h3>
+      <p>A dashboard where students sign in, enter courses and grades, and track their GPA, with a separate API service and deployment.</p>
+      <div class="tags"><span>Next.js</span><span>TypeScript</span><span>Tailwind</span><span>Auth</span></div>
+      <a class="link" href="https://github.com/rithvika1221/GPACalculator" target="_blank" rel="noopener">View repository →</a>
+    </article>
+
+    <article class="card" data-c="research">
+      <div class="cat">Data · Tooling</div>
+      <h3>Local Business Ingestor</h3>
+      <p>A Python script that pulls local-business data and loads it into PostgreSQL — the data pipeline behind ListingHub.</p>
+      <div class="tags"><span>Python</span><span>PostgreSQL</span></div>
+      <a class="link" href="https://github.com/rithvika1221/local-business-ingestor" target="_blank" rel="noopener">View repository →</a>
+    </article>
+
+    <article class="card" data-c="research">
+      <div class="cat">Open source · Audio</div>
+      <h3>Arco (fork)</h3>
+      <p>My working fork of Arco, an embeddable sound-synthesis engine by Roger B. Dannenberg that patches FAUST unit generators and is controlled over the O2 protocol.</p>
+      <div class="tags"><span>C++</span><span>FAUST</span><span>O2</span></div>
+      <a class="link" href="https://github.com/rithvika1221/rithvika-arco" target="_blank" rel="noopener">View repository →</a>
+    </article>
+
+    <article class="card" data-c="algo">
+      <div class="cat">Competitive programming</div>
+      <h3>USACO Solutions</h3>
+      <p>My solutions to USACO Bronze and Silver problems — recursion, subsets, simulation, graphs and more.</p>
+      <div class="tags"><span>C++</span><span>Java</span><span>Algorithms</span></div>
+      <a class="link" href="https://github.com/rithvika1221/usaco" target="_blank" rel="noopener">View repository →</a>
+    </article>
+
+  </div>
+</div></section>
+
+<section id="skills"><div class="wrap">
+  <h2>Skills</h2>
+  <p class="sub">Tools I reach for most.</p>
+  <div class="skills">
+    <div><h4>Languages</h4><ul><li>JavaScript</li><li>TypeScript</li><li>Python</li><li>Java</li><li>C++</li><li>SQL</li></ul></div>
+    <div><h4>Web</h4><ul><li>Next.js</li><li>React</li><li>Tailwind CSS</li><li>Spring Boot</li><li>OAuth</li></ul></div>
+    <div><h4>Data</h4><ul><li>PostgreSQL</li><li>Logical replication</li><li>Performance testing</li></ul></div>
+    <div><h4>Tools</h4><ul><li>Git & GitHub</li><li>Vercel</li><li>VS Code</li><li>Capacitor</li></ul></div>
+  </div>
+</div></section>
+
+<section id="contact" class="contact"><div class="wrap">
+  <h2>Let's connect</h2>
+  <p class="sub" style="margin-left:auto;margin-right:auto">I'm always happy to talk about projects, research or ideas for helping my community with technology.</p>
+  <div class="cta">
+    <a class="btn primary" href="https://www.linkedin.com/in/rithvika-devisetti-b92a70266" target="_blank" rel="noopener">Message me on LinkedIn</a>
+    <a class="btn" href="https://github.com/rithvika1221" target="_blank" rel="noopener">Follow on GitHub</a>
+  </div>
+</div></section>
+
+<footer>© <span id="y"></span> Rithvika Devisetti · Hosted on GitHub Pages</footer>
+
+<script>
+document.getElementById('y').textContent=new Date().getFullYear();
+document.querySelectorAll('.filters button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));
+  const f=b.dataset.f;
+  document.querySelectorAll('.card').forEach(c=>c.classList.toggle('hidden',f!=='all'&&c.dataset.c!==f));
+}));
+</script>
+</body>
+</html>
