@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Rithvika Devisetti</title>
-<meta name="description" content="The story of Rithvika Devisetti — violinist, Telugu teacher, mental-health organizer, PostgreSQL contributor and researcher — told as a log that replays.">
+<meta name="description" content="The story of Rithvika Devisetti — violinist, Telugu teacher, mental-health organizer, PostgreSQL contributor and researcher — told as a database log that replays. Or query it yourself in psql.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2318233D'/%3E%3Cpath d='M9 23V9h7a4 4 0 0 1 0 8h-7m6 0 6 6' fill='none' stroke='%23E8A92A' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,7 +12,8 @@
 <style>
 :root{
   --paper:#EDF0F4; --paper-2:#E2E7EE; --ink:#18233D; --muted:#56627A; --rule:#C9D1DC;
-  --gold:#E8A92A; --gold-ink:#94620A; --teal:#21667E;
+  --gold:#E8A92A; --gold-ink:#94620A; --teal:#21667E; --err:#B23A30;
+  --term:#121B2F; --term-ink:#D5DDEA; --term-dim:#8796AF;
   --display:"Bricolage Grotesque",system-ui,sans-serif;
   --serif:"Newsreader",Georgia,serif;
   --mono:"IBM Plex Mono",ui-monospace,monospace;
@@ -21,14 +22,15 @@
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     --paper:#0F1626; --paper-2:#161F33; --ink:#E4E9F2; --muted:#98A4BA; --rule:#28344C;
-    --gold:#F0B442; --gold-ink:#F0B442; --teal:#74B8D0; color-scheme:dark;
+    --gold:#F0B442; --gold-ink:#F0B442; --teal:#74B8D0; --err:#F29186; --term:#0A1120; color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --paper:#0F1626; --paper-2:#161F33; --ink:#E4E9F2; --muted:#98A4BA; --rule:#28344C;
-  --gold:#F0B442; --gold-ink:#F0B442; --teal:#74B8D0; color-scheme:dark;
+  --gold:#F0B442; --gold-ink:#F0B442; --teal:#74B8D0; --err:#F29186; --term:#0A1120; color-scheme:dark;
 }
 *{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
 html{scroll-behavior:smooth;scroll-padding-top:72px}
 body{background:var(--paper);color:var(--ink);font:400 19px/1.62 var(--serif);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 a{color:var(--gold-ink);text-decoration-thickness:1px;text-underline-offset:3px}
@@ -36,28 +38,33 @@ a:hover{text-decoration-thickness:2px}
 :focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:3px}
 .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
 
-/* status bar: the "replica" catching up as you read */
+/* top bar */
 .bar{position:fixed;inset:0 0 auto 0;z-index:20;background:color-mix(in srgb,var(--paper) 90%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
-.bar .wrap{display:flex;align-items:center;gap:20px;height:56px}
+.bar .wrap{display:flex;align-items:center;gap:18px;height:56px}
 .mark{font:800 18px/1 var(--display);color:var(--ink);text-decoration:none;letter-spacing:-.01em}
 .replica{flex:1;min-width:0;font:400 13px/1.3 var(--mono);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .replica b{font-weight:500;color:var(--ink)}
-.bar nav{display:flex;gap:18px;font:600 15px/1 var(--display)}
-.bar nav a{color:var(--ink);text-decoration:none}
-.bar nav a:hover{color:var(--gold-ink)}
+.tabs{display:flex;gap:2px;background:var(--paper-2);border:1px solid var(--rule);border-radius:999px;padding:3px}
+.tabs a{display:inline-flex;align-items:center;height:32px;font:600 14.5px/1 var(--display);padding:0 14px;border-radius:999px;color:var(--muted);text-decoration:none;white-space:nowrap}
+.tabs a:hover{color:var(--ink)}
+.tabs a[aria-current="page"]{background:var(--ink);color:var(--paper)}
+.tabs code{font:500 13.5px var(--mono)}
 .theme{background:none;border:1px solid var(--rule);color:var(--ink);border-radius:999px;width:34px;height:34px;cursor:pointer;flex:none;display:grid;place-items:center}
 .progress{position:absolute;left:0;bottom:-1px;height:2px;width:100%;background:var(--gold);transform-origin:0 50%;transform:scaleX(0)}
 
 /* hero */
-.hero{padding:150px 24px 90px;position:relative}
+.hero{padding:150px 24px 90px}
 .hero h1{font:800 clamp(58px,12.5vw,168px)/.86 var(--display);letter-spacing:-.045em;margin-left:-.04em}
 .hero h1 span{display:block}
 .hero h1 .ln2{padding-left:.9em;font-weight:400;letter-spacing:-.035em}
 .intro{display:grid;grid-template-columns:minmax(0,560px) minmax(0,1fr);gap:56px;margin-top:56px;align-items:end}
 .intro p{font-size:23px;line-height:1.5}
 .intro p+p{margin-top:16px;font-size:19px;color:var(--muted)}
-.replay{display:inline-flex;margin-top:30px;font:600 17px/1 var(--display);background:var(--ink);color:var(--paper);padding:15px 24px;border-radius:999px;text-decoration:none}
-.replay:hover{background:var(--teal);color:#fff}
+.ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.btn{display:inline-flex;align-items:center;gap:8px;font:600 17px/1 var(--display);padding:15px 24px;border-radius:999px;text-decoration:none;border:1.5px solid var(--ink);color:var(--ink)}
+.btn.solid{background:var(--ink);color:var(--paper)}
+.btn:hover{background:var(--teal);border-color:var(--teal);color:#fff}
+.btn code{font:500 15px var(--mono)}
 .boot{font:400 13.5px/1.9 var(--mono);color:var(--muted);border-left:2px solid var(--gold);padding-left:18px}
 .boot div{opacity:0;animation:in .35s ease forwards}
 .boot div:nth-child(1){animation-delay:.3s}.boot div:nth-child(2){animation-delay:.75s}.boot div:nth-child(3){animation-delay:1.2s}.boot div:nth-child(4){animation-delay:1.65s}.boot div:nth-child(5){animation-delay:2.1s}
@@ -65,22 +72,48 @@ a:hover{text-decoration-thickness:2px}
 @keyframes in{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
 
 /* chapters */
-.chapter{display:grid;grid-template-columns:200px minmax(0,640px);gap:56px;padding:88px 0;border-top:1px solid var(--rule)}
+.chapter{display:grid;grid-template-columns:200px minmax(0,680px);gap:56px;padding:88px 0;border-top:1px solid var(--rule)}
 .rail{position:sticky;top:96px;align-self:start;font-family:var(--mono);font-size:13px;color:var(--muted)}
 .rail .yr{display:block;font:800 44px/1 var(--display);color:var(--ink);letter-spacing:-.03em;margin-bottom:10px}
-.rail .lsn{display:block}
+.rail span{display:block}
 .chapter h2{font:800 clamp(36px,5.2vw,58px)/1.02 var(--display);letter-spacing:-.03em;margin-bottom:26px}
 .chapter p{margin-bottom:18px}
 .chapter p.lead{font-size:23px;line-height:1.48}
-.wrote{margin-top:30px;padding-top:18px;border-top:1px dashed var(--rule);font-size:16.5px;line-height:1.55;color:var(--muted)}
-.wrote strong{font-family:var(--display);font-weight:600;color:var(--ink);font-size:15px;display:block;margin-bottom:6px}
-.wrote ul{list-style:none}
-.wrote li{padding-left:18px;position:relative;margin:4px 0}
-.wrote li::before{content:"";position:absolute;left:0;top:.62em;width:8px;height:2px;background:var(--gold)}
 .pull{font:400 italic 29px/1.32 var(--serif);border-left:3px solid var(--gold);padding:4px 0 4px 24px;margin:34px 0}
 .small{font:italic 15px/1.45 var(--serif);color:var(--muted)}
 
-/* the replication toy */
+/* inline query results */
+.q{margin-top:22px;border:1px solid var(--rule);border-radius:14px;background:var(--paper-2);overflow:hidden}
+.q+.q{margin-top:12px}
+.q summary{display:flex;align-items:flex-start;gap:12px;padding:14px 16px 14px 18px;cursor:pointer;list-style:none;font:400 14px/1.55 var(--mono)}
+.q summary::-webkit-details-marker{display:none}
+.q summary:hover .run{border-color:var(--ink);color:var(--ink)}
+.q .pr{color:var(--muted);flex:none}
+.q summary code{flex:1;min-width:0;font:inherit;color:var(--ink);word-break:break-word}
+.kw{color:var(--teal);font-weight:500}
+.str{color:var(--gold-ink)}
+.run{flex:none;font:600 13px/1 var(--display);color:var(--muted);border:1px solid var(--rule);border-radius:999px;padding:6px 11px;margin-top:-1px;background:var(--paper)}
+.run .h{display:none}
+.q[open] .run .s{display:none}.q[open] .run .h{display:inline}
+.q[open] summary{border-bottom:1px solid var(--rule)}
+.rs table{width:100%;border-collapse:collapse;font-size:16.5px;line-height:1.5}
+.rs th{text-align:left;font:500 12.5px/1.2 var(--mono);color:var(--muted);padding:12px 16px 10px 18px;border-bottom:1px solid var(--rule);white-space:nowrap}
+.rs td{padding:12px 16px 12px 18px;vertical-align:top;border-bottom:1px dashed var(--rule)}
+.rs td.k{font:600 15.5px/1.4 var(--display);min-width:9em}
+.rs td.k a{color:var(--ink)}
+.rs td.n{font:400 14px/1.6 var(--mono);color:var(--muted);white-space:nowrap}
+.null{font:italic 14px var(--serif);color:var(--muted)}
+.chips span{display:inline-block;font:500 12px/1.2 var(--mono);background:var(--paper);border:1px solid var(--rule);padding:3px 7px;border-radius:6px;margin:0 4px 4px 0}
+.rec{padding:6px 18px 4px}
+.rec .rh{font:400 13px var(--mono);color:var(--muted);padding:8px 0 4px}
+.rec dl{display:grid;grid-template-columns:150px minmax(0,1fr);gap:0 18px}
+.rec dt{font:400 13.5px/1.9 var(--mono);color:var(--muted);border-bottom:1px dashed var(--rule);padding:6px 0}
+.rec dd{font-size:16.5px;line-height:1.5;border-bottom:1px dashed var(--rule);padding:7px 0}
+.rs-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 16px 12px 18px;font:400 13px var(--mono);color:var(--muted)}
+.linkbtn{font:600 14px/1 var(--display);background:none;border:none;color:var(--gold-ink);cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:4px 0}
+.err{font:400 14px/1.65 var(--mono);color:var(--err);padding:14px 18px;white-space:pre-wrap}
+
+/* replication toy */
 .demo{margin:34px 0 10px;background:var(--paper-2);border:1px solid var(--rule);border-radius:18px;padding:22px 22px 18px}
 .demo svg{width:100%;height:auto;display:block}
 .demo .ctrl{display:flex;flex-wrap:wrap;gap:14px 24px;align-items:center;margin-top:12px;font:400 15px/1.3 var(--display)}
@@ -98,43 +131,88 @@ a:hover{text-decoration-thickness:2px}
 .bow button[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#18233D}
 .bow canvas{flex:1;min-width:200px;height:56px;width:100%}
 
-/* end */
+/* ending */
 .now{padding:96px 24px 40px}
 .now::before{content:"";display:block;border-top:1px solid var(--rule);margin:-96px 0 96px}
 .now h2{font:800 clamp(44px,8vw,104px)/.92 var(--display);letter-spacing:-.04em;max-width:900px}
 .now .cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px;margin-top:48px}
 .now h3{font:600 20px/1.2 var(--display);margin-bottom:8px}
 .now .cols p{font-size:17px;color:var(--muted)}
+.now .qs{max-width:760px;margin-top:40px}
 .links{display:flex;flex-wrap:wrap;gap:12px;margin-top:44px}
-.links a{font:600 17px/1 var(--display);text-decoration:none;color:var(--ink);border:1.5px solid var(--ink);padding:14px 22px;border-radius:999px}
-.links a:first-child{background:var(--ink);color:var(--paper)}
-.links a:hover{border-color:var(--teal);background:var(--teal);color:#fff}
-details.receipts{margin:64px 0 0;border-top:1px solid var(--rule);padding-top:22px}
-details.receipts summary{cursor:pointer;font:600 18px/1.3 var(--display);list-style:none}
-details.receipts summary::-webkit-details-marker{display:none}
-details.receipts summary::before{content:"+ ";color:var(--gold-ink)}
-details.receipts[open] summary::before{content:"– "}
-.rgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 40px;margin-top:12px;font-size:16px;color:var(--muted)}
-.rgrid h4{font:600 15px/1.3 var(--display);color:var(--ink);margin:14px 0 4px}
-.rgrid p{margin-bottom:6px}
 footer{padding:40px 24px 56px;font:400 14px/1.5 var(--display);color:var(--muted)}
 
+/* psql view */
+.pv-wrap{padding:112px 24px 40px}
+.pv-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:16px 40px}
+.pv-head h1{font:800 clamp(44px,7vw,84px)/.95 var(--display);letter-spacing:-.04em}
+.pv-head p{max-width:460px;color:var(--muted);font-size:18px}
+.pv{display:grid;grid-template-columns:270px minmax(0,1fr);gap:22px;margin-top:32px;align-items:start}
+.pv>*{min-width:0}
+.schema h2{font:600 15px/1.2 var(--display);margin:0 0 10px 2px}
+.schema ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+.schema button{width:100%;text-align:left;background:var(--paper-2);border:1px solid var(--rule);border-radius:12px;padding:10px 14px;cursor:pointer;color:var(--ink);display:block}
+.schema button:hover{border-color:var(--ink)}
+.schema b{font:500 14px var(--mono)}
+.schema .rows{float:right;font:400 12px/1.6 var(--mono);color:var(--muted)}
+.schema small{display:block;font:15px/1.35 var(--serif);color:var(--muted);margin-top:2px}
+.term{background:var(--term);color:var(--term-ink);border:1px solid var(--rule);border-radius:16px;padding:16px 18px 12px;font:400 14px/1.55 var(--mono);height:min(72vh,680px);display:flex;flex-direction:column}
+.term:focus-within{box-shadow:0 0 0 2px var(--gold)}
+.tout{flex:1;overflow:auto;padding-bottom:6px}
+.tout pre{font:inherit;white-space:pre;margin:0 0 10px}
+.tout pre.wrap{white-space:pre-wrap;word-break:break-word}
+.tout .cmd{color:#fff}
+.tout .p{color:#7FC0D6}
+.tout .e{color:#F49A90}
+.tout .h{color:#E9B95A}
+.tout .d{color:var(--term-dim)}
+.tline{display:flex;gap:8px;align-items:center;border-top:1px solid rgba(255,255,255,.08);padding-top:10px}
+.tline label{color:#7FC0D6;flex:none}
+.tline input{flex:1;min-width:0;background:transparent;border:none;color:#fff;font:inherit;outline:none;caret-color:#E8A92A}
+.tline input::placeholder{color:#5E6E8A}
+.tryrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;font:400 15px/1.3 var(--display);color:var(--muted);align-items:center}
+.tryrow button{font:500 13px var(--mono);background:var(--paper-2);border:1px solid var(--rule);color:var(--ink);border-radius:8px;padding:6px 10px;cursor:pointer}
+.tryrow button:hover{border-color:var(--ink)}
+
 @media (max-width:860px){
-  .bar nav{display:none}
+  .replica{display:none}
+  .bar .wrap{justify-content:space-between}
   .intro{grid-template-columns:1fr;gap:36px}
   .chapter{grid-template-columns:1fr;gap:18px;padding:64px 0}
-  .rail{position:static;display:flex;align-items:baseline;gap:14px}
+  .rail{position:static;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
   .rail .yr{font-size:34px;margin:0}
-  .now .cols,.rgrid{grid-template-columns:1fr}
+  .now .cols{grid-template-columns:1fr}
   .hero{padding:120px 24px 64px}
   .hero h1 .ln2{padding-left:.5em}
+  .pv{grid-template-columns:1fr}
+  .schema ul{flex-direction:row;overflow-x:auto;padding-bottom:6px}
+  .schema li{flex:none}
+  .schema button{width:auto;white-space:nowrap}
+  .schema small{display:none}
+  .schema .rows{float:none;margin-left:8px}
+  .term{height:62vh}
+}
+@media (max-width:640px){
+  .rs thead{display:none}
+  .rs table,.rs tbody,.rs tr,.rs td{display:block}
+  .rs tr{padding:10px 18px 12px;border-bottom:1px solid var(--rule);counter-increment:rec}
+  .rs tbody{counter-reset:rec}
+  .rs tr::before{content:"-[ RECORD " counter(rec) " ]-";display:block;font:400 12.5px var(--mono);color:var(--muted);margin-bottom:4px}
+  .rs td,.rs td.k,.rs td.n{display:grid;grid-template-columns:84px minmax(0,1fr);gap:10px;padding:3px 0;border:none;white-space:normal;min-width:0}
+  .rs td::before{content:attr(data-c);font:400 12.5px/1.9 var(--mono);color:var(--muted)}
+  .rec dl{grid-template-columns:96px minmax(0,1fr);gap:0 10px}
+  .rec dt{font-size:12.5px}
 }
 @media (max-width:480px){
   body{font-size:18px}
-  .wrap,.hero,.now,footer{padding-left:16px;padding-right:16px}
+  .wrap,.hero,.now,footer,.pv-wrap{padding-left:16px;padding-right:16px}
   .intro p,.chapter p.lead{font-size:20px}
   .pull{font-size:24px}
   .demo input[type=range]{width:130px}
+  .tabs a{padding:0 11px}
+  .q summary{font-size:13px;padding:12px 12px 12px 14px}
+  .q .pr{display:none}
+  .term{font-size:12.5px;padding:12px}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -148,88 +226,101 @@ footer{padding:40px 24px 56px;font:400 14px/1.5 var(--display);color:var(--muted
   <div class="wrap">
     <a class="mark" href="#top">rithvika</a>
     <div class="replica"><span id="rp">replica waiting at <b>the beginning</b></span></div>
-    <nav aria-label="Sections"><a href="#log">The story</a><a href="#lag">Research</a><a href="#now">Say hello</a></nav>
+    <nav class="tabs" aria-label="Views">
+      <a href="#top" id="tab-story" aria-current="page">Story</a>
+      <a href="#psql" id="tab-psql"><code>psql</code></a>
+    </nav>
     <button class="theme" id="theme" aria-label="Switch between light and dark"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/></svg></button>
   </div>
   <div class="progress" id="progress"></div>
 </header>
 
-<main id="top">
-<section class="hero wrap">
+<!-- ============ STORY VIEW ============ -->
+<main id="story">
+<section class="hero" id="top">
+ <div class="wrap" style="padding:0">
   <h1><span>Rithvika</span><span class="ln2">Devisetti</span></h1>
   <div class="intro">
     <div>
       <p>A database never trusts its memory. Before it changes anything, it writes the change down in a log, and other machines replay that log, one record at a time, until they catch up.</p>
-      <p>I've spent this past year studying how long that catching up takes. This is my own log, replayed from the first record.</p>
-      <a class="replay" href="#log">Start replaying</a>
+      <p>I've spent this past year studying how long that catching up takes. This is my own log, replayed from the first record. Every chapter also hides a query, if you want the details.</p>
+      <div class="ctas">
+        <a class="btn solid" href="#log">Start replaying</a>
+        <a class="btn" href="#psql">Query me in <code>psql</code></a>
+      </div>
     </div>
     <div class="boot" aria-hidden="true">
       <div>LOG: database system is starting up</div>
-      <div>LOG: redo starts at <em>2019</em></div>
+      <div>LOG: redo starts at <em>0/7E3</em> (2019)</div>
       <div>LOG: replaying violin, Telugu, code…</div>
       <div>LOG: consistent recovery state reached</div>
       <div>LOG: ready to accept readers</div>
     </div>
   </div>
+ </div>
 </section>
 
 <div class="wrap" id="log">
 
   <section class="chapter" data-title="2019 · With the bow">
-    <div class="rail"><span class="yr">2019</span><span class="lsn">record 1 of 7</span></div>
+    <div class="rail"><span class="yr">2019</span><span title="2019, written in hexadecimal">LSN 0/7E3</span><span>record 1 of 7</span></div>
     <div>
       <h2>It starts with a violin.</h2>
       <p class="lead">In fifth grade I picked up the violin and learned a word I'd keep running into for the rest of this story: <i>arco</i>, Italian for “with the bow.”</p>
       <p>Six years of orchestra taught me something no class did. Getting better isn't one big leap. It's the same short passage, replayed slowly, then a little faster, until your hands remember it without you. Small changes, applied in order. I didn't know it yet, but that's exactly how a database recovers.</p>
+      <p>Orchestra also showed me what a commit feels like: sixty musicians, one downbeat, and everyone's part has to land together or none of it works.</p>
+      <details class="q" data-sql="SELECT * FROM hobbies;"></details>
     </div>
   </section>
 
   <section class="chapter" data-title="2021 · Passing it on">
-    <div class="rail"><span class="yr">2021</span><span class="lsn">record 2 of 7</span></div>
+    <div class="rail"><span class="yr">2021</span><span title="2021, written in hexadecimal">LSN 0/7E5</span><span>record 2 of 7</span></div>
     <div>
       <h2>Then I became the one teaching.</h2>
-      <p class="lead">Every week for more than four years, I've helped younger kids learn Telugu, my family's language, at Mana Samskriti and Telugu Bharati.</p>
-      <p>A six-year-old doesn't care how fluent you are. They care whether you can get the idea from your head into theirs. Teaching made me notice the gap between knowing something and someone else having it, and how much patience it takes to close.</p>
+      <p class="lead">Every week for more than four years, I've helped younger kids learn Telugu, my family's language, at Mana Samskriti and Telugu Bharati, a community I've been part of since 2018.</p>
+      <p>A six-year-old doesn't care how fluent you are. They care whether you can get the idea from your head into theirs. Teaching made me notice the gap between knowing something and someone else having it, and how much patience it takes to close. Along the way I earned Washington's Seal of Biliteracy in Telugu.</p>
       <p>That gap shows up in almost everything I've built since.</p>
-      <div class="wrote"><strong>Written to the log</strong><ul><li>Washington State Seal of Biliteracy in Telugu</li><li>Four-plus years as a weekly teacher's assistant</li></ul></div>
+      <details class="q" data-sql="SELECT org, role, since, what FROM experience WHERE era = 'passing_it_on';"></details>
     </div>
   </section>
 
   <section class="chapter" data-title="2023 · First programs">
-    <div class="rail"><span class="yr">2023</span><span class="lsn">record 3 of 7</span></div>
+    <div class="rail"><span class="yr">2023</span><span title="2023, written in hexadecimal">LSN 0/7E7</span><span>record 3 of 7</span></div>
     <div>
       <h2>Code turned out to be another way to tell stories.</h2>
       <p class="lead">At Girls Who Code I made shapes move across a screen with p5.js, and I was hooked on typing something and watching it come alive.</p>
-      <p>I started entering FBLA coding competitions. My first big project was <b>GradeMaster</b>, a GPA tracker with AI features, and it placed 4th in the state. A year later I built <b>Mythic Pathways</b>, a branching-story app where readers choose their way through myths, with narration and a way for other authors to publish their own. That year I took 1st in Washington and 3rd at Nationals.</p>
+      <p>I started entering FBLA coding competitions. My first big project was <b>GradeMaster</b>, a GPA tracker with AI features, refined through rounds of feedback from real students. A year later I built <b><a href="https://www.mythicpathways.org" target="_blank" rel="noopener">Mythic Pathways</a></b>, a branching-story app where readers choose their way through myths, with narration and a way for other authors to publish their own. That year I took 1st in Washington and 3rd at Nationals.</p>
       <p>On the side I was grinding USACO problems, and eventually qualified for the Gold division. Stories and algorithms felt like opposite interests. They're really the same skill: deciding what happens next.</p>
-      <div class="wrote"><strong>Written to the log</strong><ul><li>FBLA Nationals, 3rd place, Introduction to Programming (2025)</li><li>FBLA Washington: 1st in Coding &amp; Programming (2026); 1st (2025) and 4th (2024) in Intro to Programming</li><li>USACO Gold qualifier</li><li>TSA Washington, 10th in Children's Stories</li></ul></div>
+      <details class="q" data-sql="SELECT name, year, what, stack FROM projects WHERE era = 'first_programs';"></details>
+      <details class="q" data-sql="SELECT award, event, year FROM awards WHERE era = 'first_programs';"></details>
     </div>
   </section>
 
   <section class="chapter" data-title="2024 · The quiet problem">
-    <div class="rail"><span class="yr">2024</span><span class="lsn">record 4 of 7</span></div>
+    <div class="rail"><span class="yr">2024</span><span title="2024, written in hexadecimal">LSN 0/7E8</span><span>record 4 of 7</span></div>
     <div>
       <h2>Some problems aren't technical.</h2>
       <p class="lead">Around me, people my age were struggling with stress and anxiety, and many weren't getting support. Awareness posters weren't enough.</p>
-      <p>So in June 2024 I started <b>Mind Mission</b>, a student-led mental-health initiative. We ran workshops on managing stress and balancing life, and I built the website so counselors, helplines and trusted resources were one tap away instead of buried. It grew from one school to the whole district and into community partnerships, reaching more than 500 students.</p>
+      <p>So in June 2024 I started <b>Mind Mission</b>, a student-led mental-health initiative. We ran workshops on managing stress and balancing life, and I built <a href="https://mindmission.space" target="_blank" rel="noopener">its website</a> so counselors, helplines and trusted resources were one tap away instead of buried. It grew from one school to the whole district and into community partnerships, reaching more than 500 students.</p>
       <p>I also wrote and published a book, <i>Finding Strength Within</i>, for teens who'd rather read than talk; it's been handed out at workshops and libraries. I became Western Regional Director for Address Teen Stress, and sat on my school's Counseling Advisory Council to help shape what support looks like from the inside.</p>
       <p class="pull">Same gap as teaching Telugu: the help existed. It just wasn't reaching the people who needed it.</p>
-      <div class="wrote"><strong>Written to the log</strong><ul><li>500+ students reached through Mind Mission workshops and outreach</li><li><i>Finding Strength Within</i>: 100+ digital downloads, print copies in local hands</li><li>President of the Advanced Technology Honors Society, running hackathons and workshops at school</li></ul></div>
+      <details class="q" data-sql="SELECT org, role, since, what FROM experience WHERE era = 'quiet_problem';"></details>
     </div>
   </section>
 
   <section class="chapter" data-title="2024–25 · Real data, real people">
-    <div class="rail"><span class="yr">’24–25</span><span class="lsn">record 5 of 7</span></div>
+    <div class="rail"><span class="yr">’24–25</span><span title="2024 and 2025, written in hexadecimal">LSN 0/7E8–7E9</span><span>record 5 of 7</span></div>
     <div>
       <h2>Then I met the messy data the real world runs on.</h2>
       <p class="lead">At the University of Washington's SEAL Laboratory, engineers write energy-savings reports for local industry, and much of the data work was being done by hand.</p>
       <p>I wrote JavaScript and Google Apps Script tools that searched, cleaned and summarized the assessment data, and they ended up supporting more than 50 professional reports. It was the first time code I wrote saved someone else hours.</p>
       <p>The next summer I interned at Rove Miles, a Y Combinator-backed travel startup, designing algorithms to find the best-value ways to redeem airline miles and co-writing a paper on how airlines distribute fares. The same summer I joined Harvard's HUVTSP program, doing market research and product strategy with startup teams. I learned that a working program is only half the job. The other half is understanding who it's for.</p>
+      <details class="q" data-sql="SELECT org, role, since, what FROM experience WHERE era = 'real_data';"></details>
     </div>
   </section>
 
   <section class="chapter" id="lag" data-title="2025–26 · Down to the log">
-    <div class="rail"><span class="yr">’25–26</span><span class="lsn">record 6 of 7</span></div>
+    <div class="rail"><span class="yr">’25–26</span><span title="2025 and 2026, written in hexadecimal">LSN 0/7E9–7EA</span><span>record 6 of 7</span></div>
     <div>
       <h2>I went looking for the gap inside the database itself.</h2>
       <p class="lead">Almost every app I'd built sat on PostgreSQL. So I asked a question about it: when you copy a database to other machines, why does the copy sometimes fall behind, and can you see it coming?</p>
@@ -239,7 +330,7 @@ footer{padding:40px 24px 56px;font:400 14px/1.5 var(--display);color:var(--muted
         <svg viewBox="0 0 600 170" role="img" aria-label="Animated diagram: changes travel from a primary database to a replica. When the write rate exceeds the replica's apply rate, a queue builds up.">
           <path d="M150 85 H450" stroke="var(--rule)" stroke-width="2" fill="none"/>
           <g font-family="IBM Plex Mono, monospace" font-size="16" fill="var(--muted)" text-anchor="middle">
-            <text x="85" y="162">primary</text><text x="515" y="162">replica</text>
+            <text x="85" y="164">primary</text><text x="515" y="164">replica</text>
           </g>
           <g fill="var(--paper)" stroke="var(--ink)" stroke-width="2.5">
             <path d="M40 40 v90 a45 14 0 0 0 90 0 v-90"/><ellipse cx="85" cy="40" rx="45" ry="14"/>
@@ -261,14 +352,17 @@ footer{padding:40px 24px 56px;font:400 14px/1.5 var(--display);color:var(--muted
         <div><b>0.83</b>R² for the lag model</div>
         <div><b>1</b>paper accepted</div>
       </div>
-      <p>My paper has been <b>accepted for publication in the National High School Journal of Science</b>.</p>
-      <p>Studying PostgreSQL that closely pulled me into building it. I started compiling the source, testing other people's patches and reviewing them on the pgsql-hackers mailing list, where the database is designed in public. I reported bugs I found in its internals. Then code I wrote was <b>accepted into PostgreSQL itself</b>, and I'm credited by name in the official commits.</p>
+      <p>My paper has been <b>accepted for publication in the National High School Journal of Science</b>. The experiment scripts and results are <a href="https://github.com/rithvika1221/Postgres_Research" target="_blank" rel="noopener">on GitHub</a>.</p>
+      <details class="q" data-sql="SELECT * FROM research;"></details>
+
+      <p style="margin-top:34px">Studying PostgreSQL that closely pulled me into building it. I started compiling the source, testing other people's patches and reviewing them on the pgsql-hackers mailing list, where the database is designed in public. I reported bugs I found in its internals. Then code I wrote was <b>accepted into PostgreSQL itself</b>, and I'm credited by name in the official commits.</p>
       <p class="pull">One of the most widely used databases in the world now has a few lines from a high school student in Bothell. I still find that hard to believe.</p>
+      <details class="q" data-sql="SELECT contribution, status FROM open_source WHERE project = 'PostgreSQL';"></details>
     </div>
   </section>
 
   <section class="chapter" data-title="2026 · Arco, again">
-    <div class="rail"><span class="yr">2026</span><span class="lsn">record 7 of 7</span></div>
+    <div class="rail"><span class="yr">2026</span><span title="2026, written in hexadecimal">LSN 0/7EA</span><span>record 7 of 7</span></div>
     <div>
       <h2>And then the story bent back to the violin.</h2>
       <p class="lead">This year I started working with Dr. Roger B. Dannenberg at Carnegie Mellon, a pioneer of computer music. His group has a sound-synthesis system that new students could no longer even install.</p>
@@ -280,7 +374,7 @@ footer{padding:40px 24px 56px;font:400 14px/1.5 var(--display);color:var(--muted
       </div>
       <p class="small">A bowed A (440 Hz), synthesized in your browser from a sawtooth wave, a filter, a slow attack and a little vibrato: the same kind of building blocks a synthesis system like Arco patches together.</p>
       <p style="margin-top:22px">A setup guide is a small thing. It's also the clearest version of what I keep doing: noticing the gap between what someone knows and what someone else can reach, and building the bridge.</p>
-      <div class="wrote"><strong>Also written in 2026</strong><ul><li>Data Science intern at MOXVR: a Python regression model projecting renewable-energy adoption in all 50 states through 2050</li><li>Kode With Klossy scholar: built and presented a team software project</li><li>Still building <b>Neighbourly</b>, a local-business platform with search, reviews, bookings and an AI assistant, so neighbors can find the shops around them</li></ul></div>
+      <details class="q" data-sql="SELECT name, year, what, stack FROM projects WHERE era = 'arco_again';"></details>
     </div>
   </section>
 </div>
@@ -292,69 +386,381 @@ footer{padding:40px 24px 56px;font:400 14px/1.5 var(--display);color:var(--muted
     <div><h3>What I'm chasing</h3><p>Systems that stay correct under pressure: databases, distributed computing, and the tools that make them easier for the next person to use.</p></div>
     <div><h3>What hasn't changed</h3><p>I still teach Telugu every week, and I still care most about whether the thing I built actually reaches people.</p></div>
   </div>
-  <div class="links">
-    <a href="https://www.linkedin.com/in/rithvika-devisetti-b92a70266" target="_blank" rel="noopener">Message me on LinkedIn</a>
-    <a href="https://github.com/rithvika1221" target="_blank" rel="noopener">See my code on GitHub</a>
+  <div class="qs">
+    <details class="q" data-sql="SELECT course, area, status FROM academics;"></details>
+    <details class="q" data-sql="SELECT gpa, test_scores FROM academics;"></details>
   </div>
-
-  <details class="receipts">
-    <summary>The full record, for the detail-minded</summary>
-    <div class="rgrid">
-      <div>
-        <h4>Research and open source</h4>
-        <p>PostgreSQL logical replication lag study, independent researcher (Dec 2025–present). Paper accepted for publication, National High School Journal of Science.</p>
-        <p>PostgreSQL Global Development Group, open-source contributor (2025–present).</p>
-        <p>Carnegie Mellon University, research software developer with Dr. Roger B. Dannenberg (2026–present).</p>
-        <p>University of Washington SEAL Laboratory, lab associate (summer 2024).</p>
-        <h4>Internships and programs</h4>
-        <p>Rove Miles, AI and software engineering intern (2025). MOXVR, data science intern (2026). Harvard HUVTSP (2025). Kode With Klossy scholar (2026). Girls Who Code Summer Immersion (2024).</p>
-      </div>
-      <div>
-        <h4>Honors</h4>
-        <p>FBLA National Leadership Conference, 3rd in Intro to Programming (2025). FBLA Washington, 1st in Coding &amp; Programming (2026), 1st (2025) and 4th (2024) in Intro to Programming. USACO Gold qualifier. TSA Washington, 10th in Children's Stories. Seal of Biliteracy in Telugu. AP Scholar with Distinction.</p>
-        <h4>Leadership and service</h4>
-        <p>Mind Mission, founder and president. Address Teen Stress, Western Regional Director. Advanced Technology Honors Society, president. FBLA Industry Relations team. NCHS Counseling Advisory Council. Mill Creek Youth Advisory Board. Mana Samskriti and Telugu Bharati, teacher's assistant. Orchestra, violin (2019–2025).</p>
-        <h4>Tools I reach for</h4>
-        <p>Java, Python (Pandas, NumPy, PyTorch), C, SQL, JavaScript and TypeScript. PostgreSQL, MySQL, Microsoft Azure. Next.js, React, Spring Boot.</p>
-      </div>
-    </div>
-  </details>
+  <div class="links">
+    <a class="btn solid" href="https://www.linkedin.com/in/rithvika-devisetti-b92a70266" target="_blank" rel="noopener">Message me on LinkedIn</a>
+    <a class="btn" href="https://github.com/rithvika1221" target="_blank" rel="noopener">See my code on GitHub</a>
+    <a class="btn" href="#psql">Query everything in <code>psql</code></a>
+  </div>
 </section>
 </main>
 
-<footer class="wrap">© <span id="yr"></span> Rithvika Devisetti. Hand-written in HTML and hosted on GitHub Pages.</footer>
+<!-- ============ PSQL VIEW ============ -->
+<main id="psql-view" hidden>
+  <div class="wrap pv-wrap">
+    <div class="pv-head">
+      <h1>Query me.</h1>
+      <p>Every part of the story is also a table. Pick one from the schema, or type SQL the way you would in psql. It's read-only, so you can't break anything.</p>
+    </div>
+    <div class="pv">
+      <aside class="schema" aria-label="Tables">
+        <h2>Schema <span class="d" style="font:400 13px var(--mono);color:var(--muted)">public</span></h2>
+        <ul id="schema"></ul>
+      </aside>
+      <div>
+        <div class="term" id="term">
+          <div class="tout" id="tout" aria-live="polite"></div>
+          <form class="tline" id="tform" autocomplete="off">
+            <label for="tin">rithvika=#</label>
+            <input id="tin" spellcheck="false" autocapitalize="off" placeholder="SELECT * FROM projects;">
+          </form>
+        </div>
+        <div class="tryrow"><span>Try</span>
+          <button type="button" data-run="\dt">\dt</button>
+          <button type="button" data-run="\d research">\d research</button>
+          <button type="button" data-run="SELECT name, year FROM projects ORDER BY year DESC;">projects by year</button>
+          <button type="button" data-run="SELECT * FROM pg_stat_replication;">pg_stat_replication</button>
+          <button type="button" data-run="help">help</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="wrap">© <span id="yr"></span> Rithvika Devisetti. Hand-written in HTML, served from a write-ahead log of one, hosted on GitHub Pages.</footer>
 
 <script>
+/* ------------------------------------------------------------------
+   The data: every table you can query on this site.
+------------------------------------------------------------------ */
+var DB = {
+  about_me:{desc:"who I am, in one row", rows:[
+    {name:"Rithvika Devisetti", school:"North Creek High School", class_of:2027, home:"Bothell, WA", favorite_db:"PostgreSQL", instrument:"violin, since 5th grade", languages:["English","Telugu","Spanish"], currently:"contributing to PostgreSQL, reviving Arco at Carnegie Mellon, finishing senior year"}]},
+  hobbies:{desc:"life outside the terminal", rows:[
+    {hobby:"violin", since:2019, note:"school orchestra from 5th grade through 2025, two of those years at North Creek. My longest-running process."},
+    {hobby:"mentoring", since:2018, note:"teacher's assistant at Mana Samskriti, my cultural community, teaching Telugu to younger kids."},
+    {hobby:"advocacy", since:2024, note:"organizing mental-health workshops and writing wellness content."},
+    {hobby:"competitions", since:2023, note:"FBLA programming events: part coding, part presenting, all adrenaline."},
+    {hobby:"tinkering", since:null, note:"side projects, benchmarks, and “what happens if I turn this knob?”"}]},
+  interests:{desc:"what I could talk about for hours", rows:[
+    {topic:"postgresql", why:"replication, indexing, query planning: the most fun I've had with a computer"},
+    {topic:"full_stack", why:"schema to API to UI, end to end, with Next.js and React"},
+    {topic:"machine_learning", why:"PyTorch and pandas, best when the model predicts something concrete"},
+    {topic:"computer_music", why:"where the violin and code finally met: audio synthesis with Arco"},
+    {topic:"competitive_programming", why:"USACO puzzles with a scoreboard; Gold division qualifier"},
+    {topic:"entrepreneurship", why:"product strategy and market research, from Harvard's HUVTSP to Rove Miles"},
+    {topic:"automation", why:"replacing hours of manual work with a script that runs in seconds"}]},
+  projects:{desc:"things I've built and researched", rows:[
+    {name:"girls_who_code", year:"2023–24", era:"first_programs", what:"Creative coding in JavaScript and p5.js through Girls Who Code's Summer Immersion Program and competitions, building team capstones with industry mentors.", stack:["JavaScript","p5.js"]},
+    {name:"grademaster", year:"2024", era:"first_programs", what:"A GPA tracker with AI features that helps students follow their academic performance, refined through rounds of real user feedback. FBLA project, 4th in Washington.", stack:["React","Next.js","Tailwind CSS","AI"]},
+    {name:"mythic_pathways", year:"2025", era:"first_programs", what:"An interactive storytelling platform: branching narratives readers steer with their choices, AI story features, text-to-speech, and a publishing system for other authors. FBLA project, 1st in Washington, 3rd at Nationals.", stack:["Next.js","React","Vercel Postgres","Tailwind CSS"], link:"https://www.mythicpathways.org"},
+    {name:"mind_mission_site", year:"2024–", era:"quiet_problem", what:"Home base for Mind Mission: event and workshop sign-ups, and counselors, helplines and trusted resources in one place.", stack:["Next.js","PostgreSQL","Google Sheets API"], link:"https://mindmission.space"},
+    {name:"seal_lab_automation", year:"2024", era:"real_data", what:"JavaScript and Apps Script pipelines that search, clean and summarize industrial energy-assessment data for UW's Industrial Assessment Center, supporting 50+ professional reports.", stack:["JavaScript","Google Apps Script"]},
+    {name:"miles_redemption", year:"2025", era:"real_data", what:"AI algorithms at Rove Miles that find the best-value ways to redeem airline miles, inside a full-stack app using real-time flight data for search, pricing analysis and loyalty features.", stack:["AI","full-stack web","real-time data"]},
+    {name:"pg_replication_lag", year:"2025–26", era:"the_log", what:"Predictive modeling of PostgreSQL logical replication lag: 29 controlled Azure experiments and a model (R² = 0.83) that warns before replicas fall behind. Paper accepted, NHSJS.", stack:["PostgreSQL","Python","Azure","ML"], link:"https://github.com/rithvika1221/Postgres_Research"},
+    {name:"arco", year:"2026", era:"arco_again", what:"Revived Dr. Roger B. Dannenberg's audio-synthesis system at Carnegie Mellon: 15+ install-blocking bugs fixed and merged upstream, plus a setup guide for incoming student researchers.", stack:["C/C++","FAUST","O2","build systems"], link:"https://github.com/rithvika1221/rithvika-arco"},
+    {name:"neighbourly", year:"2025–", era:"arco_again", what:"A local-business discovery platform: search, reviews, favorites, bookings, an AI chatbot, owner dashboards with analytics, and admin approval workflows.", stack:["Next.js 15","React 19","TypeScript","Vercel Postgres","NextAuth","Google Maps API","OpenAI API"]},
+    {name:"renewables_2050", year:"2026", era:"arco_again", what:"A Python regression model at MOXVR projecting renewable-energy adoption across all 50 U.S. states through 2050.", stack:["Python","pandas","regression"]}]},
+  experience:{desc:"internships, research, leadership, community", rows:[
+    {org:"Mana Samskriti & Telugu Bharati", role:"Telugu teacher's assistant", since:"2021", era:"passing_it_on", what:"Weekly classes teaching Telugu language and culture to younger students, in a community I've belonged to since 2018."},
+    {org:"Mill Creek Youth Advisory Board", role:"volunteer", since:"2023", era:"passing_it_on", what:"40+ hours a year supporting youth programs and community initiatives."},
+    {org:"FBLA", role:"coding competitor · Industry Relations team", since:"2023", era:"first_programs", what:"3x national qualifier in coding events; organized competition workshops for 250+ students."},
+    {org:"Girls Who Code", role:"competition manager · Summer Immersion", since:"2023", era:"first_programs", what:"Led club competition teams; built team capstones with industry mentors."},
+    {org:"Mind Mission", role:"founder & president", since:"2024", era:"quiet_problem", what:"Grew a student-led mental-health initiative from one school to district-wide and community partnerships, with workshops and outreach for 500+ students and a team of writers and volunteers."},
+    {org:"Address Teen Stress", role:"Western Regional Director", since:"2024", era:"quiet_problem", what:"Regional outreach and partnerships for teen mental-health awareness."},
+    {org:"NCHS Counseling Advisory Council", role:"member", since:"2023", era:"quiet_problem", what:"Advising counselors on improving mental-health resources and student support."},
+    {org:"Advanced Technology Honors Society", role:"president", since:"2024", era:"quiet_problem", what:"Running hackathons, workshops and tech events, and building partnerships to widen tech opportunities at school."},
+    {org:"UW SEAL Laboratory", role:"lab associate", since:"2024", era:"real_data", what:"Automated data workflows for UW's Industrial Assessment Center, supporting 50+ professional energy-savings reports."},
+    {org:"Rove Miles (Y Combinator)", role:"AI & software engineering intern", since:"2025", era:"real_data", what:"Designed AI algorithms for airline-miles redemption, worked on a full-stack app with real-time flight data, and co-wrote a paper on airline distribution systems (GDS and NDC)."},
+    {org:"Harvard HUVTSP", role:"program participant", since:"2025", era:"real_data", what:"Selected for Harvard Undergraduate Ventures–TECH; market research, business analysis and product strategy on startup teams."},
+    {org:"PostgreSQL Global Development Group", role:"open-source contributor", since:"2025", era:"the_log", what:"Code accepted into PostgreSQL and credited in official commits; patch testing and reviews on pgsql-hackers; bug reports in core internals."},
+    {org:"Carnegie Mellon University", role:"research software developer", since:"2026", era:"arco_again", what:"Reviving Arco with Dr. Roger B. Dannenberg: 15+ install-blocking fixes merged, plus a setup guide for new student researchers."},
+    {org:"MOXVR", role:"data science intern", since:"2026", era:"arco_again", what:"Python regression model projecting renewable-energy adoption across all 50 states through 2050."},
+    {org:"Kode With Klossy", role:"scholar", since:"2026", era:"arco_again", what:"Two-week coding bootcamp; built and presented a team software project."}]},
+  research:{desc:"the replication-lag study, in one row", rows:[
+    {question:"When a PostgreSQL replica falls behind, can we predict it from ordinary system metrics before readers see stale data?",
+     setup:"29 controlled experiments on Microsoft Azure, a primary streaming changes to a subscriber over logical replication",
+     varied:"write workload and system conditions",
+     measured:"replication lag over time, plus primary-side cost: CPU, WAL generation and commit latency",
+     model:"machine-learning model predicting lag from system metrics, R² = 0.83",
+     status:"accepted for publication",
+     journal:"National High School Journal of Science (NHSJS)",
+     code:"https://github.com/rithvika1221/Postgres_Research"}]},
+  open_source:{desc:"code I've given back", rows:[
+    {project:"PostgreSQL", contribution:"Code accepted into PostgreSQL core", status:"committed, credited by name"},
+    {project:"PostgreSQL", contribution:"Building, testing and reviewing community patches on pgsql-hackers", status:"ongoing"},
+    {project:"PostgreSQL", contribution:"Bug reports in core database internals", status:"reported"},
+    {project:"Arco (CMU)", contribution:"15+ install-blocking bug fixes", status:"merged upstream"},
+    {project:"Arco (CMU)", contribution:"Step-by-step setup guide for incoming student researchers", status:"published to the group"}]},
+  writing:{desc:"words with my name on them", rows:[
+    {title:"Finding Strength Within", kind:"self-published book on teen mental health", year:2025, status:"in workshops and libraries; 100+ digital downloads"},
+    {title:"Airline distribution systems (GDS and NDC) and travel markets", kind:"co-authored research paper, Rove Miles", year:2025, status:"written"},
+    {title:"PostgreSQL logical replication lag study", kind:"research paper", year:2026, status:"accepted for publication, NHSJS"},
+    {title:"Arco setup guide", kind:"technical guide", year:2026, status:"used by new researchers in Dr. Dannenberg's group"}]},
+  awards:{desc:"trophies and qualifications", rows:[
+    {award:"1st place, Coding & Programming", event:"FBLA Washington State", year:2026, era:"first_programs"},
+    {award:"3rd place, Introduction to Programming", event:"FBLA National Leadership Conference", year:2025, era:"first_programs"},
+    {award:"1st place, Introduction to Programming", event:"FBLA Washington State", year:2025, era:"first_programs"},
+    {award:"4th place, Introduction to Programming", event:"FBLA Washington State", year:2024, era:"first_programs"},
+    {award:"Gold division qualifier", event:"USA Computing Olympiad (USACO)", year:2025, era:"first_programs"},
+    {award:"10th place, Children's Stories", event:"TSA Washington State", year:null, era:"first_programs"},
+    {award:"Seal of Biliteracy, Telugu", event:"Washington State", year:null, era:"passing_it_on"},
+    {award:"AP Scholar with Distinction", event:"College Board", year:null, era:"now"},
+    {award:"Java Programming: Solving Problems with Software", event:"Coursera certificate", year:null, era:"first_programs"}]},
+  academics:{desc:"coursework (some columns are private)", restricted:["gpa","test_scores"], rows:[
+    {course:"AP Computer Science A (UW CSE 121)", area:"CS", status:"completed"},
+    {course:"AP Computer Science Principles", area:"CS", status:"completed"},
+    {course:"Advanced Programming Topics 1 & 2", area:"CS", status:"completed"},
+    {course:"AP Calculus AB (UW MATH 151)", area:"math", status:"completed"},
+    {course:"Precalculus I & II (UW MATH 141/142)", area:"math", status:"completed"},
+    {course:"AP Physics 1", area:"science", status:"completed"},
+    {course:"AP Environmental Science", area:"science", status:"completed"},
+    {course:"AP English Language · AP English Literature", area:"humanities", status:"completed"},
+    {course:"AP U.S. History · AP World History · AP Human Geography", area:"humanities", status:"completed"},
+    {course:"Spanish IV (UW SPAN 221)", area:"languages", status:"completed"},
+    {course:"AP Calculus BC · AP Statistics", area:"math", status:"senior year"},
+    {course:"AP Biology", area:"science", status:"senior year"},
+    {course:"AP Cybersecurity", area:"CS", status:"senior year"},
+    {course:"AP U.S. Government · Discourse & Society", area:"humanities", status:"senior year"}]},
+  skills:{desc:"languages, databases, frameworks, tools", rows:[
+    {category:"languages", items:["Java","Python","C","SQL","JavaScript","TypeScript","HTML","CSS"]},
+    {category:"data_and_ml", items:["pandas","NumPy","Matplotlib","PyTorch"]},
+    {category:"databases", items:["PostgreSQL","MySQL","JDBC","schema design","replication"]},
+    {category:"frameworks", items:["Next.js","React","Spring Boot","Tailwind CSS"]},
+    {category:"platforms", items:["Microsoft Azure","Vercel","Git/GitHub","Google Apps Script","VS Code","Eclipse"]},
+    {category:"spoken", items:["English","Telugu (Seal of Biliteracy)","Spanish (4 years)"]}]},
+  contact:{desc:"where to find me", rows:[
+    {channel:"linkedin", link:"https://www.linkedin.com/in/rithvika-devisetti-b92a70266"},
+    {channel:"github", link:"https://github.com/rithvika1221"}]}
+};
+var SYSTEM = {
+  pg_stat_replication:{rows:[{application_name:"you", client_addr:"your browser", state:"streaming", sent_lsn:"0/7EA", replay_lsn:"0/7EA", replay_lag:"00:00:00 (you're all caught up)"}]}
+};
+
+/* ------------------------------------------------------------------
+   A tiny read-only SQL engine for those tables.
+------------------------------------------------------------------ */
+function columnsOf(t){ var cols=[]; t.rows.forEach(function(r){ Object.keys(r).forEach(function(k){ if(cols.indexOf(k)<0) cols.push(k); }); }); return cols; }
+function cmpVal(v){ return v==null?'':String(v).toLowerCase(); }
+function runSQL(input){
+  var sql=input.trim().replace(/;+\s*$/,'');
+  var low=sql.toLowerCase();
+  var m;
+  if(/^(insert|update|delete|drop|alter|create|truncate|grant|revoke)\b/.test(low)){
+    return {error:'ERROR:  cannot execute '+sql.split(/\s+/)[0].toUpperCase()+' in a read-only transaction\nHINT:  This database only accepts readers. Try a SELECT.'};
+  }
+  if(/^select\s+version\s*\(\s*\)$/.test(low)) return {cols:['version'],rows:[{version:'PostgreSQL 17 on rithvika.dev, compiled by curiosity, 64-bit'}]};
+  if(/^select\s+(now|current_timestamp)\s*(\(\s*\))?$/.test(low)) return {cols:['now'],rows:[{now:new Date().toString()}]};
+  if(/^select\s+current_user$/.test(low)) return {cols:['current_user'],rows:[{current_user:'visitor'}]};
+  m=sql.match(/^select\s+([\s\S]+?)\s+from\s+([a-z_][a-z0-9_.]*)([\s\S]*)$/i);
+  if(!m){
+    var w=(sql.split(/\s+/)[0]||'').replace(/[^\w\\]/g,'');
+    return {error:'ERROR:  syntax error at or near "'+w+'"\nHINT:  Type help to see what this shell understands.'};
+  }
+  var colPart=m[1].trim(), tname=m[2].toLowerCase().replace(/^public\./,'').replace(/^pg_catalog\./,''), rest=m[3]||'';
+  var t=DB[tname]||SYSTEM[tname];
+  if(!t) return {error:'ERROR:  relation "'+tname+'" does not exist\nLINE 1: ...FROM '+tname+'\nHINT:  Type \\dt to list the tables.'};
+  var all=columnsOf(t);
+  var cols=colPart==='*'?all:colPart.split(',').map(function(c){return c.trim().toLowerCase();});
+  var denied=cols.filter(function(c){return (t.restricted||[]).indexOf(c)>=0;});
+  if(denied.length) return {error:'ERROR:  permission denied for column'+(denied.length>1?'s':'')+' '+denied.map(function(c){return '"'+c+'"';}).join(', ')+' of relation "'+tname+'"\nHINT:  Row-level security is on. Some data stays between me and the admissions office.'};
+  for(var i=0;i<cols.length;i++){ if(all.indexOf(cols[i])<0) return {error:'ERROR:  column "'+cols[i]+'" does not exist\nHINT:  Try \\d '+tname+' to see its columns.'}; }
+  var rows=t.rows.slice();
+  var wm=rest.match(/\bwhere\s+([a-z_]+)\s*(=|<>|!=|i?like)\s*('([^']*)'|-?\d+)/i);
+  if(/\bwhere\b/i.test(rest)&&!wm) return {error:'ERROR:  this shell understands WHERE column = \'value\' (or LIKE / ILIKE)'};
+  if(wm){
+    var wc=wm[1].toLowerCase(), op=wm[2].toLowerCase(), wv=wm[4]!==undefined?wm[4]:wm[3];
+    if(all.indexOf(wc)<0) return {error:'ERROR:  column "'+wc+'" does not exist'};
+    var re=/like/.test(op)?new RegExp('^'+wv.replace(/[.*+?^${}()|[\]\\]/g,'\\$&').replace(/%/g,'.*').replace(/_/g,'.')+'$',op==='ilike'?'i':''):null;
+    rows=rows.filter(function(r){ var v=r[wc]==null?'':String(r[wc]);
+      if(re) return re.test(v); var eq=v.toLowerCase()===String(wv).toLowerCase(); return op==='='?eq:!eq; });
+  }
+  var om=rest.match(/\border\s+by\s+([a-z_]+)(\s+(asc|desc))?/i);
+  if(om){ var oc=om[1].toLowerCase(), dir=(om[3]||'asc').toLowerCase()==='desc'?-1:1;
+    if(all.indexOf(oc)<0) return {error:'ERROR:  column "'+oc+'" does not exist'};
+    rows.sort(function(a,b){ var x=cmpVal(a[oc]),y=cmpVal(b[oc]); return x<y?-dir:x>y?dir:0; }); }
+  var lm=rest.match(/\blimit\s+(\d+)/i); if(lm) rows=rows.slice(0,+lm[1]);
+  return {cols:cols, rows:rows};
+}
+
+/* ------------------------------------------------------------------
+   Rendering helpers
+------------------------------------------------------------------ */
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+function highlight(sql){
+  return esc(sql).replace(/'[^']*'/g,function(s){return '\u0001'+s+'\u0002';})
+    .replace(/\b(SELECT|FROM|WHERE|ORDER BY|LIMIT|DESC|ASC|AND|LIKE|ILIKE)\b/g,'<span class="kw">$1</span>')
+    .replace(/\u0001/g,'<span class="str">').replace(/\u0002/g,'</span>');
+}
+function cellHTML(v,col,row){
+  if(v==null) return '<span class="null">null</span>';
+  if(Array.isArray(v)) return '<span class="chips">'+v.map(function(x){return '<span>'+esc(x)+'</span>';}).join('')+'</span>';
+  if(typeof v==='string'&&/^https?:\/\//.test(v)) return '<a href="'+esc(v)+'" target="_blank" rel="noopener">'+esc(v.replace(/^https?:\/\/(www\.)?/,''))+'</a>';
+  if(col==='name'&&row.link) return '<a href="'+esc(row.link)+'" target="_blank" rel="noopener">'+esc(v)+'</a>';
+  return esc(v);
+}
+var NARROW_COLS={year:1,since:1,status:1,area:1};
+function resultHTML(res,sql){
+  if(res.error) return '<div class="err">'+esc(res.error)+'</div>';
+  var n=res.rows.length, h='';
+  if(n===1&&res.cols.length>3){
+    var r=res.rows[0];
+    h+='<div class="rec"><div class="rh">-[ RECORD 1 ]-</div><dl>';
+    res.cols.forEach(function(c){ h+='<dt>'+esc(c)+'</dt><dd>'+cellHTML(r[c],c,r)+'</dd>'; });
+    h+='</dl></div>';
+  } else {
+    h+='<div class="rs"><table><thead><tr>'+res.cols.map(function(c){return '<th scope="col">'+esc(c)+'</th>';}).join('')+'</tr></thead><tbody>';
+    res.rows.forEach(function(r){
+      h+='<tr>'+res.cols.map(function(c,i){ var cls=i===0?'k':(NARROW_COLS[c]?'n':''); return '<td data-c="'+esc(c)+'"'+(cls?' class="'+cls+'"':'')+'>'+cellHTML(r[c],c,r)+'</td>'; }).join('')+'</tr>';
+    });
+    h+='</tbody></table></div>';
+  }
+  h+='<div class="rs-foot"><span>('+n+' row'+(n===1?'':'s')+')</span><button type="button" class="linkbtn" data-open="'+esc(sql)+'">Open in psql</button></div>';
+  return h;
+}
+
+/* inline queries inside the story */
+[].forEach.call(document.querySelectorAll('details.q'),function(d){
+  var sql=d.getAttribute('data-sql'), res=runSQL(sql);
+  var count=res.error?'error':res.rows.length+' row'+(res.rows.length===1?'':'s');
+  d.innerHTML='<summary><span class="pr">rithvika=#</span><code>'+highlight(sql)+'</code><span class="run"><span class="s">Run · '+count+'</span><span class="h">Hide</span></span></summary>'
+    +'<div class="body">'+resultHTML(res,sql)+'</div>';
+});
+
+/* ------------------------------------------------------------------
+   psql terminal
+------------------------------------------------------------------ */
+var out=document.getElementById('tout'), tin=document.getElementById('tin'), hist=[], hi=0, expanded='auto', booted=false;
+function print(html,cls){ var p=document.createElement('pre'); if(cls) p.className=cls; p.innerHTML=html; out.appendChild(p); out.scrollTop=out.scrollHeight; return p; }
+function fmtPlain(v){ if(v==null) return ''; if(Array.isArray(v)) return '{'+v.map(function(x){return /[ ,]/.test(x)?'"'+x+'"':x;}).join(',')+'}'; return String(v); }
+function charsWide(){ var s=document.createElement('span'); s.textContent='0000000000'; s.style.visibility='hidden'; out.appendChild(s); var w=s.getBoundingClientRect().width/10; s.remove(); return Math.max(30,Math.floor((out.clientWidth-8)/(w||8.4))); }
+function pad(s,n){ s=String(s); return s+Array(Math.max(0,n-s.length)+1).join(' '); }
+function tableText(res){
+  var cols=res.cols, rows=res.rows.map(function(r){return cols.map(function(c){return fmtPlain(r[c]);});});
+  var w=cols.map(function(c,i){ return Math.max(c.length, rows.reduce(function(m,r){return Math.max(m,r[i].length);},0)); });
+  var total=w.reduce(function(a,b){return a+b+3;},0);
+  var foot='('+rows.length+' row'+(rows.length===1?'':'s')+')';
+  if(expanded===true||(expanded==='auto'&&total>charsWide())){
+    var kw=Math.max.apply(null,cols.map(function(c){return c.length;}));
+    var t=rows.map(function(r,ri){ return '-[ RECORD '+(ri+1)+' ]'+Array(Math.max(4,kw-8)).join('-')+'\n'+cols.map(function(c,i){return pad(c,kw)+' | '+r[i];}).join('\n'); }).join('\n');
+    return {text:(rows.length?t:'(0 rows)')+(rows.length?'\n'+foot:''), wrap:true};
+  }
+  var head=' '+cols.map(function(c,i){ var l=Math.floor((w[i]-c.length)/2); return pad(Array(l+1).join(' ')+c,w[i]); }).join(' | ');
+  var sep=w.map(function(x){return Array(x+3).join('-');}).join('+');
+  var body=rows.map(function(r){ return ' '+r.map(function(v,i){return pad(v,w[i]);}).join(' | '); }).join('\n');
+  return {text:head+'\n'+sep+(body?'\n'+body:'')+'\n'+foot, wrap:false};
+}
+var HELP=[
+ 'You are connected to database "rithvika" as user "visitor" (read-only).',
+ '',
+ '  \\dt                 list tables',
+ '  \\d <table>          describe a table',
+ '  \\x                  toggle expanded display (on / off / auto)',
+ '  SELECT cols FROM table [WHERE col = \'x\'] [ORDER BY col [DESC]] [LIMIT n];',
+ '  clear               clear the screen',
+ '  \\q                  quit',
+ '',
+ 'Try:  SELECT * FROM projects;    SELECT * FROM pg_stat_replication;'].join('\n');
+function exec(cmd){
+  var c=cmd.trim(); if(!c) return;
+  print('<span class="p">rithvika=#</span> <span class="cmd">'+esc(c)+'</span>');
+  hist.push(c); hi=hist.length;
+  var low=c.toLowerCase().replace(/;+\s*$/,'');
+  if(low==='help'||low==='\\?'||low==='\\h'){ print(esc(HELP),'d'); return; }
+  if(low==='clear'||low==='\\! clear'){ out.innerHTML=''; return; }
+  if(low==='\\q'||low==='exit'||low==='quit'){ print('connection closed. Thanks for visiting. Commit often, index wisely.\n(type anything to reconnect)','d'); return; }
+  if(low==='\\x'||/^\\x\s+(on|off|auto)$/.test(low)){
+    var a=low.split(/\s+/)[1]; expanded=a?(a==='on'?true:a==='off'?false:'auto'):(expanded===true?false:expanded===false?'auto':true);
+    print('Expanded display is '+(expanded===true?'on':expanded===false?'off':'used automatically')+'.','d'); return; }
+  if(low==='\\dt'||low==='\\dt+'||low==='\\d'){
+    var plus=low==='\\dt+';
+    var res={cols:plus?['schema','name','type','owner','rows','description']:['schema','name','type','owner','rows'],rows:Object.keys(DB).map(function(k){return {schema:'public',name:k,type:'table',owner:'rithvika',rows:DB[k].rows.length,description:DB[k].desc};})};
+    var tt=tableText(res); print(esc('                 List of relations\n'+tt.text),tt.wrap?'wrap':''); return; }
+  var dm=low.match(/^\\d\+?\s+([a-z_.]+)$/);
+  if(dm){ var name=dm[1].replace(/^public\./,''), t=DB[name]||SYSTEM[name];
+    if(!t){ print(esc('Did not find any relation named "'+name+'".'),'e'); return; }
+    var cols=columnsOf(t).map(function(k){ var s=t.rows.map(function(r){return r[k];}).filter(function(v){return v!=null;})[0];
+      var ty=Array.isArray(s)?'text[]':typeof s==='number'?'integer':/^https?:/.test(s||'')?'url':'text'; return {column:k,type:ty}; });
+    (t.restricted||[]).forEach(function(k){cols.push({column:k,type:'numeric (restricted)'});});
+    var dt=tableText({cols:['column','type'],rows:cols}); print(esc('Table "public.'+name+'"'+(t.desc?'  -- '+t.desc:'')+'\n'+dt.text.replace(/\n\(\d+ rows?\)$/,''))); return; }
+  var r=runSQL(c);
+  if(r.error){ print(esc(r.error),'e'); return; }
+  var txt=tableText(r); print(esc(txt.text), txt.wrap?'wrap':'');
+}
+function boot(){
+  if(booted) return; booted=true;
+  print(esc('psql (17.5, client: your browser)\nSSL connection (protocol: TLSv1.3, cipher: CURIOSITY_AES_256)\nType "help" for help.'),'d');
+  exec('\\dt');
+}
+document.getElementById('tform').addEventListener('submit',function(e){ e.preventDefault(); var v=tin.value; tin.value=''; exec(v); });
+tin.addEventListener('keydown',function(e){
+  if(e.key==='ArrowUp'&&hist.length){ hi=Math.max(0,hi-1); tin.value=hist[hi]; e.preventDefault(); }
+  else if(e.key==='ArrowDown'&&hist.length){ hi=Math.min(hist.length,hi+1); tin.value=hist[hi]||''; e.preventDefault(); }
+  else if(e.key==='l'&&e.ctrlKey){ out.innerHTML=''; e.preventDefault(); }
+});
+document.getElementById('term').addEventListener('click',function(e){ if(!window.getSelection().toString()&&e.target.tagName!=='A') tin.focus(); });
+var sch=document.getElementById('schema');
+Object.keys(DB).forEach(function(k){
+  var li=document.createElement('li');
+  li.innerHTML='<button type="button" data-run="SELECT * FROM '+k+';"><b>'+k+'</b><span class="rows">'+DB[k].rows.length+(DB[k].rows.length===1?' row':' rows')+'</span><small>'+esc(DB[k].desc)+'</small></button>';
+  sch.appendChild(li);
+});
+document.addEventListener('click',function(e){
+  var b=e.target.closest('[data-run]'); if(b){ exec(b.getAttribute('data-run')); tin.focus({preventScroll:true}); return; }
+  var o=e.target.closest('[data-open]'); if(o){ var q=o.getAttribute('data-open'); location.hash='#psql'; setTimeout(function(){ exec(q); },0); }
+});
+
+/* ------------------------------------------------------------------
+   Views, status bar, theme
+------------------------------------------------------------------ */
 (function(){
   var root=document.documentElement;
+  var story=document.getElementById('story'), pv=document.getElementById('psql-view');
+  var tS=document.getElementById('tab-story'), tP=document.getElementById('tab-psql');
+  var rp=document.getElementById('rp'), bar=document.getElementById('progress');
+  var chapters=[].slice.call(story.querySelectorAll('[data-title]'));
   document.getElementById('yr').textContent=new Date().getFullYear();
 
-  /* theme toggle (remembered per browser when storage is available) */
+  function onScroll(){
+    if(!pv.hidden){ bar.style.transform='scaleX(0)'; return; }
+    var h=document.documentElement.scrollHeight-innerHeight;
+    bar.style.transform='scaleX('+(h>0?Math.min(1,scrollY/h):0)+')';
+    var cur=null;
+    chapters.forEach(function(c){ if(c.getBoundingClientRect().top<innerHeight*0.45) cur=c; });
+    var behind=cur?chapters.length-1-chapters.indexOf(cur):chapters.length;
+    rp.innerHTML=cur ? 'replayed through <b>'+cur.dataset.title+'</b>'+(behind?' · '+behind+' behind':' · lag 0') : 'replica waiting at <b>the beginning</b>';
+  }
+  function route(){
+    var isP=location.hash==='#psql';
+    var was=!pv.hidden;
+    story.hidden=isP; pv.hidden=!isP;
+    if(isP){ tP.setAttribute('aria-current','page'); tS.removeAttribute('aria-current');
+      rp.innerHTML='connected to <b>rithvika</b> as <b>visitor</b> · read-only';
+      boot(); if(!was) scrollTo(0,0); tin.focus({preventScroll:true});
+    } else { tS.setAttribute('aria-current','page'); tP.removeAttribute('aria-current');
+      var target=location.hash&&document.getElementById(location.hash.slice(1));
+      if(was&&target) target.scrollIntoView(); else if(was) scrollTo(0,0);
+      onScroll(); }
+  }
+  addEventListener('hashchange',route); addEventListener('scroll',onScroll,{passive:true}); route();
+
   try{var saved=localStorage.getItem('theme'); if(saved) root.setAttribute('data-theme',saved);}catch(e){}
   document.getElementById('theme').addEventListener('click',function(){
     var t=root.getAttribute('data-theme');
     var dark=t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches);
     var next=dark?'light':'dark'; root.setAttribute('data-theme',next);
     try{localStorage.setItem('theme',next);}catch(e){}
-    if(!nodes) flat();
+    window.dispatchEvent(new Event('themechange'));
   });
+})();
 
-  /* replica status + reading progress */
-  var rp=document.getElementById('rp'), bar=document.getElementById('progress');
-  var chapters=[].slice.call(document.querySelectorAll('[data-title]'));
-  function onScroll(){
-    var h=document.documentElement.scrollHeight-innerHeight;
-    bar.style.transform='scaleX('+(h>0?Math.min(1,scrollY/h):0)+')';
-    var cur=null;
-    chapters.forEach(function(c){ if(c.getBoundingClientRect().top<innerHeight*0.45) cur=c; });
-    var behind=cur?chapters.length-1-chapters.indexOf(cur):chapters.length;
-    rp.innerHTML=cur
-      ? 'replayed through <b>'+cur.dataset.title+'</b>'+(behind?' · '+behind+' behind':' · lag 0')
-      : 'replica waiting at <b>the beginning</b>';
-  }
-  addEventListener('scroll',onScroll,{passive:true}); onScroll();
-
-  /* replication toy */
+/* ------------------------------------------------------------------
+   Replication toy
+------------------------------------------------------------------ */
+(function(){
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var NS='http://www.w3.org/2000/svg', dotsG=document.getElementById('dots'), qG=document.getElementById('queue');
   var rate=document.getElementById('rate'), out=document.getElementById('lagout');
@@ -384,14 +790,19 @@ footer{padding:40px 24px 56px;font:400 14px/1.5 var(--display);color:var(--muted
     var still=function(){ var r=+rate.value*1.25; queue=r>APPLY?Math.round((r-APPLY)*12):0; drawQueue(); };
     rate.addEventListener('input',still); still();
   } else requestAnimationFrame(tick);
+})();
 
-  /* a bowed A */
+/* ------------------------------------------------------------------
+   A bowed A
+------------------------------------------------------------------ */
+(function(){
+  var root=document.documentElement;
   var btn=document.getElementById('bowbtn'), cv=document.getElementById('wave'), ctx=cv.getContext('2d');
   var ac=null, nodes=null, analyser=null, raf=0;
   function css(v){return getComputedStyle(root).getPropertyValue(v).trim();}
-  function size(){ var r=cv.getBoundingClientRect(); cv.width=Math.max(1,r.width*devicePixelRatio); cv.height=Math.max(1,r.height*devicePixelRatio); if(!nodes) flat(); }
   function flat(){ ctx.clearRect(0,0,cv.width,cv.height); ctx.strokeStyle=css('--rule'); ctx.lineWidth=2*devicePixelRatio; ctx.beginPath(); ctx.moveTo(0,cv.height/2); ctx.lineTo(cv.width,cv.height/2); ctx.stroke(); }
-  size(); addEventListener('resize',size);
+  function size(){ var r=cv.getBoundingClientRect(); if(!r.width) return; cv.width=r.width*devicePixelRatio; cv.height=r.height*devicePixelRatio; if(!nodes) flat(); }
+  size(); addEventListener('resize',size); addEventListener('hashchange',function(){setTimeout(size,0);}); addEventListener('themechange',function(){ if(!nodes) flat(); });
   function draw(){
     var buf=new Uint8Array(analyser.fftSize); analyser.getByteTimeDomainData(buf);
     ctx.clearRect(0,0,cv.width,cv.height); ctx.strokeStyle=css('--gold'); ctx.lineWidth=2*devicePixelRatio; ctx.beginPath();
