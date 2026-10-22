@@ -1,231 +1,1112 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rithvika Devisetti</title>
-<meta name="description" content="Rithvika Devisetti — student developer and researcher building web apps, database research and community tech.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rithvika Devisetti — student, builder, PostgreSQL enthusiast</title>
+<meta name="description" content="Rithvika Devisetti — high school builder, full-stack developer, and PostgreSQL enthusiast. Explore my life, one query at a time.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cellipse cx='16' cy='7' rx='11' ry='4.5' fill='%234a90c9'/%3E%3Cpath d='M5 7v18c0 2.5 4.9 4.5 11 4.5s11-2 11-4.5V7' fill='none' stroke='%234a90c9' stroke-width='3'/%3E%3Cpath d='M5 16c0 2.5 4.9 4.5 11 4.5s11-2 11-4.5' fill='none' stroke='%234a90c9' stroke-width='3'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f7f4ee; --surface:#fffdf9; --ink:#1d1b18; --muted:#6b655c; --line:#e4ddd0;
-  --accent:#c2410c; --accent-soft:#fde8dc; --tag:#efe9df;
-}
-@media (prefers-color-scheme: dark){
-  :root{ --bg:#141311; --surface:#1c1a17; --ink:#f1ece4; --muted:#a39b8f; --line:#2e2a25;
-    --accent:#fb923c; --accent-soft:#3a2416; --tag:#26231f; }
+  --bg:#0a0f1c;
+  --bg-soft:#0d1424;
+  --panel:rgba(19,30,52,.55);
+  --panel-solid:#111b30;
+  --border:rgba(96,140,190,.14);
+  --border-bright:rgba(96,160,220,.32);
+  --pg:#336791;
+  --blue:#5ba3dc;
+  --cyan:#63d3e4;
+  --green:#6ee7a0;
+  --yellow:#f0d080;
+  --pink:#e29ad4;
+  --red:#f07178;
+  --text:#c4d3e6;
+  --text-strong:#f2f7fd;
+  --dim:#7d93ad;
+  --dimmer:#4a5f78;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --sans:'Inter',-apple-system,'Segoe UI',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font:16px/1.65 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-a{color:inherit}
-.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
-nav{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-nav .wrap{display:flex;justify-content:space-between;align-items:center;height:60px}
-.logo{font-family:Fraunces,serif;font-weight:700;font-size:20px;text-decoration:none}
-.logo span{color:var(--accent)}
-nav ul{display:flex;gap:22px;list-style:none;font-size:14px}
-nav ul a{text-decoration:none;color:var(--muted)} nav ul a:hover{color:var(--ink)}
-header.hero{padding:96px 0 72px}
-.kicker{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--accent);letter-spacing:.04em}
-h1{font-family:Fraunces,serif;font-weight:700;font-size:clamp(40px,7vw,76px);line-height:1.04;letter-spacing:-.02em;margin:14px 0 22px}
-h1 em{font-style:normal;color:var(--accent)}
-.lede{font-size:clamp(17px,2.1vw,20px);color:var(--muted);max-width:640px}
-.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:999px;font-weight:600;font-size:15px;text-decoration:none;border:1.5px solid var(--ink);transition:.15s}
-.btn.primary{background:var(--ink);color:var(--bg)}
-.btn:hover{transform:translateY(-1px)}
-section{padding:72px 0;border-top:1px solid var(--line)}
-h2{font-family:Fraunces,serif;font-size:clamp(28px,4vw,38px);font-weight:700;letter-spacing:-.01em;margin-bottom:8px}
-.sub{color:var(--muted);margin-bottom:36px;max-width:620px}
-.about-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:40px}
-.about-grid p+p{margin-top:14px}
-.facts{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px}
-.facts dt{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
-.facts dd{margin:2px 0 16px;font-weight:500}
-.facts dd:last-child{margin-bottom:0}
-.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
-.filters button{font:500 14px Inter,sans-serif;padding:7px 15px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--muted);cursor:pointer}
-.filters button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;transition:.2s}
-.card:hover{border-color:var(--accent);transform:translateY(-2px)}
-.card.featured{grid-column:span 2}
-.card .cat{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--accent);margin-bottom:10px}
-.card h3{font-family:Fraunces,serif;font-size:22px;font-weight:700;margin-bottom:8px;line-height:1.2}
-.card p{color:var(--muted);font-size:15px;flex:1}
-.tags{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 14px}
-.tags span{font:500 12px "JetBrains Mono",monospace;background:var(--tag);padding:3px 9px;border-radius:6px}
-.card .link{font-size:14px;font-weight:600;text-decoration:none;color:var(--accent)}
-.card .link.private{color:var(--muted);font-weight:500}
-.hidden{display:none}
-.skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
-.skills div{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px}
-.skills h4{font-size:13px;font-family:"JetBrains Mono",monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;font-weight:500}
-.skills ul{list-style:none;display:flex;flex-wrap:wrap;gap:6px}
-.skills li{background:var(--tag);padding:4px 10px;border-radius:6px;font-size:14px}
-.contact{text-align:center}
-.contact .cta{justify-content:center}
-footer{padding:28px 0;color:var(--muted);font-size:13px;text-align:center;border-top:1px solid var(--line)}
-@media (max-width:720px){
-  nav ul{gap:14px;font-size:13px}
-  nav ul li:nth-child(3){display:none}
-  header.hero{padding:64px 0 48px}
-  .about-grid{grid-template-columns:1fr}
-  .card.featured{grid-column:auto}
-  .grid{grid-template-columns:1fr}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  line-height:1.65;
+  font-size:16px;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
 }
+::selection{background:var(--pg);color:#fff}
+a{color:var(--blue)}
+
+/* ambient background */
+.glow{position:fixed;pointer-events:none;z-index:0;filter:blur(110px);opacity:.5;border-radius:50%}
+.glow-1{width:560px;height:560px;top:-220px;left:-140px;background:radial-gradient(circle,#1b3a5e,transparent 70%)}
+.glow-2{width:640px;height:640px;top:32%;right:-280px;background:radial-gradient(circle,#14324e,transparent 70%)}
+.glow-3{width:520px;height:520px;bottom:-240px;left:22%;background:radial-gradient(circle,#12283f,transparent 70%)}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(91,163,220,.045) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(91,163,220,.045) 1px,transparent 1px);
+  background-size:44px 44px;
+  mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 30%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 30%,transparent 75%);
+}
+.wrap{max-width:1120px;margin:0 auto;padding:0 28px;position:relative;z-index:1}
+
+/* ================= NAV ================= */
+.nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(10,15,28,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+}
+.nav-inner{
+  max-width:1120px;margin:0 auto;padding:15px 28px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{font-family:var(--mono);font-size:.95rem;font-weight:600;color:var(--text-strong);text-decoration:none;display:flex;align-items:center;gap:10px}
+.brand .ico{width:20px;height:20px;flex:none}
+.brand em{color:var(--blue);font-style:normal}
+.nav-links{display:flex;gap:28px}
+.nav-links a{
+  font-size:.86rem;font-weight:500;color:var(--dim);text-decoration:none;
+  transition:color .15s;letter-spacing:.01em;
+}
+.nav-links a:hover{color:var(--text-strong)}
+@media(max-width:820px){.nav-links{display:none}}
+
+/* ================= HERO ================= */
+.hero{padding:96px 0 40px;display:grid;grid-template-columns:1.35fr 1fr;gap:64px;align-items:center}
+@media(max-width:880px){.hero{grid-template-columns:1fr;gap:44px;padding-top:64px}}
+.eyebrow{
+  font-family:var(--mono);font-size:.82rem;color:var(--dim);margin-bottom:22px;
+  display:inline-flex;align-items:center;gap:10px;
+  border:1px solid var(--border);border-radius:999px;padding:7px 16px;
+  background:rgba(19,30,52,.5);
+}
+.eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:pulse 2.4s infinite}
+@keyframes pulse{50%{opacity:.4}}
+.eyebrow .kw{color:var(--pink)}
+.eyebrow .id{color:var(--cyan)}
+h1{
+  font-size:clamp(2.5rem,5.6vw,3.9rem);font-weight:800;line-height:1.06;
+  letter-spacing:-.035em;color:var(--text-strong);margin-bottom:22px;
+}
+h1 .grad{
+  background:linear-gradient(100deg,#6db4ea 10%,#63d3e4 55%,#8fd8b8 95%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero-sub{font-size:1.08rem;color:var(--dim);max-width:530px;margin-bottom:30px}
+.hero-sub b{color:var(--text);font-weight:600}
+.cta-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:34px}
+.btn{
+  font-family:var(--mono);font-size:.85rem;font-weight:600;text-decoration:none;
+  padding:12px 22px;border-radius:10px;transition:all .18s;letter-spacing:.01em;
+}
+.btn-primary{
+  background:linear-gradient(120deg,#2e6da8,#3d87c4);color:#fff;
+  box-shadow:0 8px 26px rgba(61,135,196,.32);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(61,135,196,.45)}
+.btn-ghost{border:1px solid var(--border-bright);color:var(--text);background:rgba(19,30,52,.4)}
+.btn-ghost:hover{border-color:var(--blue);color:var(--text-strong);transform:translateY(-2px)}
+.chip-row{display:flex;flex-wrap:wrap;gap:9px}
+.chip{
+  font-family:var(--mono);font-size:.72rem;color:var(--cyan);
+  border:1px solid rgba(99,211,228,.22);border-radius:7px;padding:4px 11px;
+  background:rgba(99,211,228,.06);
+}
+
+/* avatar card */
+.avatar-card{
+  position:relative;border-radius:22px;padding:10px;
+  background:linear-gradient(160deg,rgba(91,163,220,.25),rgba(91,163,220,.04) 40%,rgba(110,231,160,.14));
+  max-width:340px;margin:0 auto;
+}
+.avatar-inner{
+  border-radius:16px;overflow:hidden;background:linear-gradient(165deg,#13233c,#0c1526);
+  border:1px solid var(--border);
+}
+.avatar-inner svg{width:100%;height:auto;display:block}
+.avatar-cap{
+  font-family:var(--mono);font-size:.68rem;color:var(--dimmer);text-align:center;
+  padding:11px 8px 5px;
+}
+
+/* ================= TERMINAL (hero strip) ================= */
+.term{
+  background:rgba(8,12,22,.85);
+  border:1px solid var(--border);
+  border-radius:16px;
+  box-shadow:0 30px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.02) inset;
+  overflow:hidden;
+  font-family:var(--mono);font-size:.86rem;
+  margin:26px 0 0;
+}
+.term-bar{
+  display:flex;align-items:center;gap:10px;padding:12px 18px;
+  background:rgba(19,30,52,.6);border-bottom:1px solid var(--border);
+}
+.tdot{width:11px;height:11px;border-radius:50%}
+.tdot.r{background:#e0645f}.tdot.y{background:#e5b95c}.tdot.g{background:#68c366}
+.term-title{flex:1;text-align:center;font-size:.72rem;color:var(--dimmer)}
+.term-body{padding:20px 24px 24px;line-height:1.75}
+.ln{white-space:pre-wrap;word-break:break-word}
+.c-dim{color:var(--dim)}.c-dimmer{color:var(--dimmer)}.c-green{color:var(--green)}.c-cyan{color:var(--cyan)}
+.c-yellow{color:var(--yellow)}.c-pink{color:var(--pink)}.c-red{color:var(--red)}.c-white{color:var(--text-strong)}
+.prompt{color:var(--blue);font-weight:600}
+.kw{color:var(--pink);font-weight:600}
+.ident{color:var(--cyan)}
+.cursor{display:inline-block;width:8px;height:1.1em;background:var(--green);vertical-align:text-bottom;animation:blink 1.1s steps(1) infinite;border-radius:1px}
+@keyframes blink{50%{opacity:0}}
+
+/* ================= SECTIONS ================= */
+section{padding:64px 0 8px}
+.sec-head{margin-bottom:34px}
+.sec-query{font-family:var(--mono);font-size:.8rem;color:var(--dimmer);margin-bottom:12px}
+.sec-query .prompt{color:rgba(91,163,220,.75)}
+.sec-query .kw{color:rgba(226,154,212,.8)}
+.sec-query .ident{color:rgba(99,211,228,.85)}
+h2{
+  font-size:clamp(1.5rem,3vw,2.05rem);font-weight:750;letter-spacing:-.025em;
+  color:var(--text-strong);
+}
+.sec-sub{color:var(--dim);font-size:.95rem;margin-top:8px;max-width:640px}
+
+.panel{
+  background:var(--panel);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border:1px solid var(--border);border-radius:18px;padding:30px 34px;
+}
+@media(max-width:600px){.panel{padding:22px 20px;border-radius:14px}}
+
+/* schema browser (\dt) */
+.schema-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:12px}
+.schema-item{
+  display:block;text-decoration:none;
+  border:1px solid var(--border);border-radius:13px;padding:16px 18px;
+  background:rgba(19,30,52,.45);transition:all .18s;
+}
+.schema-item:hover{border-color:var(--border-bright);background:rgba(29,46,76,.55);transform:translateY(-2px)}
+.schema-item .tname{font-family:var(--mono);font-size:.86rem;font-weight:600;color:var(--cyan)}
+.schema-item .trows{font-family:var(--mono);font-size:.66rem;color:var(--dimmer);margin-top:2px}
+.schema-item .tdesc{font-size:.78rem;color:var(--dim);margin-top:8px;line-height:1.45}
+
+/* about */
+.about-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:22px;align-items:start}
+@media(max-width:820px){.about-grid{grid-template-columns:1fr}}
+.about-prose p{margin-bottom:16px;font-size:.98rem}
+.about-prose p:last-child{margin-bottom:0}
+.about-prose .hl{color:var(--cyan);font-weight:500}
+.facts{display:flex;flex-direction:column;gap:0}
+.fact{
+  display:flex;justify-content:space-between;gap:14px;align-items:baseline;
+  padding:13px 2px;border-bottom:1px dashed rgba(96,140,190,.16);
+}
+.fact:last-child{border-bottom:none}
+.fact .k{font-family:var(--mono);font-size:.74rem;color:var(--dimmer)}
+.fact .v{font-size:.85rem;color:var(--text);text-align:right;font-weight:500}
+
+/* interests + hobbies */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media(max-width:820px){.duo{grid-template-columns:1fr}}
+.list-tight{display:flex;flex-direction:column}
+.li-row{
+  display:flex;gap:16px;padding:14px 2px;align-items:baseline;
+  border-bottom:1px dashed rgba(96,140,190,.14);
+}
+.li-row:last-child{border-bottom:none}
+.li-row .k{font-family:var(--mono);font-size:.8rem;color:var(--cyan);white-space:nowrap;min-width:132px;font-weight:500}
+.li-row .v{font-size:.86rem;color:var(--dim)}
+.panel h3{
+  font-family:var(--mono);font-size:.8rem;font-weight:600;color:var(--yellow);
+  margin-bottom:10px;letter-spacing:.02em;
+}
+
+/* projects */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px}
+.card{
+  position:relative;overflow:hidden;
+  background:var(--panel);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border:1px solid var(--border);border-radius:18px;padding:26px 28px 24px;
+  transition:transform .2s,border-color .2s,box-shadow .2s;
+  display:flex;flex-direction:column;
+}
+.card:hover{transform:translateY(-4px);border-color:var(--border-bright);box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:4px}
+.card .tname{font-family:var(--mono);font-size:.98rem;font-weight:600;color:var(--text-strong)}
+.card .tname::before{content:"❯ ";color:var(--blue)}
+.badge{
+  flex:none;font-family:var(--mono);font-size:.62rem;color:var(--yellow);
+  border:1px solid rgba(240,208,128,.3);border-radius:6px;padding:3px 9px;
+  background:rgba(240,208,128,.07);white-space:nowrap;
+}
+.card .tmeta{font-family:var(--mono);font-size:.7rem;color:var(--dimmer);margin-bottom:13px}
+.card p{font-size:.86rem;color:var(--dim);flex:1}
+.card p b{color:var(--text);font-weight:600}
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+.tags span{
+  font-family:var(--mono);font-size:.66rem;color:var(--green);
+  border:1px solid rgba(110,231,160,.2);border-radius:6px;padding:2px 9px;
+  background:rgba(110,231,160,.05);
+}
+
+/* experience timeline */
+.timeline{position:relative;padding-left:26px}
+.timeline::before{
+  content:"";position:absolute;left:5px;top:8px;bottom:8px;width:1.5px;
+  background:linear-gradient(180deg,var(--blue),rgba(91,163,220,.08));
+}
+.t-item{position:relative;padding:0 0 26px}
+.t-item:last-child{padding-bottom:2px}
+.t-item::before{
+  content:"";position:absolute;left:-25px;top:8px;width:9px;height:9px;border-radius:50%;
+  background:var(--bg);border:2px solid var(--blue);
+}
+.t-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px}
+.t-org{font-weight:650;color:var(--text-strong);font-size:.96rem}
+.t-role{font-size:.83rem;color:var(--cyan);font-family:var(--mono)}
+.t-date{font-family:var(--mono);font-size:.7rem;color:var(--dimmer);margin-left:auto}
+.t-desc{font-size:.85rem;color:var(--dim);margin-top:4px;max-width:720px}
+@media(max-width:600px){.t-date{margin-left:0;width:100%}}
+
+/* academics */
+.course-grid{display:flex;flex-wrap:wrap;gap:10px}
+.course{
+  font-family:var(--mono);font-size:.78rem;color:var(--text);
+  border:1px solid var(--border);border-radius:9px;padding:8px 15px;
+  background:rgba(19,30,52,.5);transition:border-color .15s;
+}
+.course:hover{border-color:var(--border-bright)}
+.course em{font-style:normal;color:var(--dimmer);font-size:.68rem;margin-left:7px}
+.errblock{
+  font-family:var(--mono);font-size:.8rem;
+  border:1px solid rgba(240,113,120,.25);border-left:3px solid var(--red);
+  background:rgba(240,113,120,.06);
+  padding:16px 20px;border-radius:10px;margin-top:22px;line-height:1.8;
+}
+
+/* awards */
+.award-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.award{
+  border:1px solid var(--border);border-radius:14px;padding:20px 22px;
+  background:rgba(19,30,52,.45);transition:all .18s;
+}
+.award:hover{border-color:rgba(240,208,128,.4);transform:translateY(-2px)}
+.award .a-emoji{font-size:1.35rem;line-height:1;margin-bottom:10px}
+.award .a-title{font-weight:650;color:var(--text-strong);font-size:.9rem;line-height:1.35}
+.award .a-sub{font-size:.76rem;color:var(--dim);margin-top:5px}
+.award .a-year{font-family:var(--mono);font-size:.68rem;color:var(--yellow);margin-top:9px}
+
+/* skills */
+.skill-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.skill-col{border:1px solid var(--border);border-radius:14px;padding:20px 22px;background:rgba(19,30,52,.45)}
+.skill-col .s-head{font-family:var(--mono);font-size:.72rem;color:var(--yellow);margin-bottom:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.skill-col ul{list-style:none}
+.skill-col li{
+  font-size:.83rem;color:var(--dim);padding:4px 0 4px 16px;position:relative;
+}
+.skill-col li::before{content:"▸";position:absolute;left:0;color:var(--blue);font-size:.7rem;top:7px}
+.skill-col li b{color:var(--text);font-weight:550}
+
+/* interactive terminal */
+#iterm{
+  background:rgba(7,11,20,.9);border:1px solid var(--border);border-radius:16px;
+  font-family:var(--mono);font-size:.84rem;cursor:text;overflow:hidden;
+}
+#iterm .term-body{min-height:220px}
+#iterm-input-row{display:flex;align-items:baseline}
+#iterm-input{
+  background:transparent;border:none;outline:none;color:var(--text-strong);
+  font:inherit;flex:1;caret-color:var(--green);padding-left:9px;
+}
+.hint-keys{font-family:var(--mono);font-size:.7rem;color:var(--dimmer);margin-top:12px}
+.hint-keys code{color:var(--cyan)}
+
+/* contact + footer */
+.contact-row{display:flex;gap:16px;flex-wrap:wrap}
+.contact-btn{
+  display:inline-flex;align-items:center;gap:11px;text-decoration:none;
+  border:1px solid var(--border);border-radius:13px;padding:15px 24px;
+  background:rgba(19,30,52,.45);transition:all .18s;
+}
+.contact-btn:hover{border-color:var(--border-bright);transform:translateY(-2px)}
+.contact-btn .c-k{font-family:var(--mono);font-size:.72rem;color:var(--dimmer)}
+.contact-btn .c-v{font-size:.88rem;color:var(--text-strong);font-weight:550}
+footer{padding:70px 0 46px;color:var(--dimmer);font-size:.78rem;font-family:var(--mono)}
+footer .fq{margin-bottom:10px}
+footer a{color:var(--blue);text-decoration:none}
+.sep{margin:0 9px;opacity:.5}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .65s cubic-bezier(.2,.6,.2,1),transform .65s cubic-bezier(.2,.6,.2,1)}
+.reveal.vis{opacity:1;transform:none}
+
+/* ===== v3 modern effects ===== */
+/* scroll progress bar */
+#progress{position:fixed;top:0;left:0;height:2.5px;width:0;z-index:200;
+  background:linear-gradient(90deg,#3d87c4,#63d3e4,#6ee7a0);
+  box-shadow:0 0 12px rgba(99,211,228,.7);transition:width .08s linear}
+
+/* particle canvas */
+#fx{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.65}
+
+/* animated gradient headline */
+h1 .grad{background-size:220% 220%;animation:gradmove 7s ease-in-out infinite}
+@keyframes gradmove{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+/* rotating typewriter roles */
+.roles{font-family:var(--mono);font-size:.9rem;color:var(--dim);margin:-8px 0 26px;min-height:1.5em}
+.roles .cmt{color:var(--dimmer)}
+.roles #roletype{color:var(--green)}
+.tcur{display:inline-block;width:8px;height:1.05em;background:var(--green);vertical-align:text-bottom;margin-left:2px;animation:blink 1s steps(1) infinite;border-radius:1px}
+
+/* cursor spotlight on cards */
+.card,.schema-item,.award,.skill-col,.contact-btn{position:relative}
+.spot::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:radial-gradient(340px circle at var(--mx,50%) var(--my,50%),rgba(99,180,240,.12),transparent 65%);
+  opacity:0;transition:opacity .3s;
+}
+.spot:hover::after{opacity:1}
+.spot::before{
+  content:"";position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;padding:1px;
+  background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),rgba(120,200,255,.55),transparent 70%);
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  opacity:0;transition:opacity .3s;
+}
+.spot:hover::before{opacity:1}
+
+/* shine sweep on primary button */
+.btn-primary{position:relative;overflow:hidden}
+.btn-primary::after{
+  content:"";position:absolute;top:0;left:-80%;width:50%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);
+  transform:skewX(-20deg);animation:shine 4.2s ease-in-out infinite;
+}
+@keyframes shine{0%,60%{left:-80%}85%,100%{left:130%}}
+
+/* avatar 3d tilt */
+.avatar-card{transform-style:preserve-3d;transition:transform .25s ease-out;will-change:transform}
+.avatar-card .avatar-inner{transform:translateZ(24px)}
+
+/* nav link underline effect */
+.nav-links a{position:relative}
+.nav-links a::after{
+  content:"";position:absolute;left:0;bottom:-4px;height:1.5px;width:0;
+  background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width .22s;
+}
+.nav-links a:hover::after{width:100%}
+
+@media (prefers-reduced-motion: reduce){
+  #fx{display:none}
+  h1 .grad,.btn-primary::after,.tcur,.eyebrow .dot{animation:none}
+  *{transition-duration:.01ms !important}
+}
+
+/* ===== light theme ===== */
+body{transition:background .35s,color .35s}
+body.light{
+  --bg:#f2f6fb; --panel:rgba(255,255,255,.75); --panel-solid:#ffffff;
+  --border:rgba(30,70,120,.14); --border-bright:rgba(25,95,165,.38);
+  --blue:#2f6ea8; --cyan:#0d7c92; --green:#178a52; --yellow:#9c7418; --pink:#ad4b96; --red:#c23c48;
+  --text:#33465e; --text-strong:#0e1c30; --dim:#5a7290; --dimmer:#93a7bd;
+}
+body.light::before{background-image:linear-gradient(rgba(40,90,150,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(40,90,150,.06) 1px,transparent 1px)}
+body.light .glow{opacity:.4}
+body.light .glow-1{background:radial-gradient(circle,#bcd7ef,transparent 70%)}
+body.light .glow-2{background:radial-gradient(circle,#c3e3ee,transparent 70%)}
+body.light .glow-3{background:radial-gradient(circle,#c9e9d8,transparent 70%)}
+body.light .nav{background:rgba(242,246,251,.82)}
+body.light h1 .grad{background:linear-gradient(100deg,#2f6ea8 10%,#0d7c92 55%,#178a52 95%);background-size:220% 220%;-webkit-background-clip:text;background-clip:text}
+body.light .btn-ghost{background:rgba(255,255,255,.75)}
+body.light .card,body.light .schema-item,body.light .award,body.light .skill-col,body.light .contact-btn,body.light .eyebrow,body.light .course{background:rgba(255,255,255,.78)}
+body.light .card:hover{box-shadow:0 20px 50px rgba(30,60,110,.15)}
+body.light .term,body.light #iterm{
+  --dim:#7d93ad;--dimmer:#4a5f78;--green:#6ee7a0;--cyan:#63d3e4;--pink:#e29ad4;--red:#f07178;
+  --text-strong:#f2f7fd;--blue:#5ba3dc;--yellow:#f0d080;--text:#c4d3e6;--border:rgba(96,140,190,.18);
+  box-shadow:0 24px 60px rgba(20,45,80,.22);
+}
+body.light .spot::after{background:radial-gradient(340px circle at var(--mx,50%) var(--my,50%),rgba(47,110,168,.08),transparent 65%)}
+body.light .spot::before{background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),rgba(31,100,170,.45),transparent 70%)}
+body.light #fx{opacity:.5}
+body.light .chip{color:#0d7c92;border-color:rgba(13,124,146,.25);background:rgba(13,124,146,.06)}
+body.light .tags span{color:#178a52;border-color:rgba(23,138,82,.28);background:rgba(23,138,82,.06)}
+body.light .errblock{background:rgba(194,60,72,.06);border-color:rgba(194,60,72,.28)}
+body.light #progress{box-shadow:0 0 10px rgba(47,110,168,.5)}
+
+/* ===== intro splash ===== */
+#splash{
+  position:fixed;inset:0;z-index:999;background:#0a0f1c;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  transition:opacity .55s ease,visibility .55s;
+}
+#splash.done{opacity:0;visibility:hidden;pointer-events:none}
+#splash .s-small{font-family:var(--mono);color:#7d93ad;font-size:clamp(.8rem,2vw,1rem);opacity:0;animation:sfade .4s .1s forwards}
+#splash .s-small .sp{color:#5ba3dc;font-weight:600}
+#splash .s-small .sk{color:#e29ad4;font-weight:600}
+#splash .s-name{
+  font-family:var(--sans);font-weight:800;font-size:clamp(2.4rem,9vw,5.4rem);
+  letter-spacing:-.035em;line-height:1.05;text-align:center;padding:0 20px;
+  background:linear-gradient(100deg,#6db4ea 5%,#63d3e4 45%,#8fd8b8 90%);
+  background-size:220% 220%;-webkit-background-clip:text;background-clip:text;color:transparent;
+  opacity:0;transform:scale(.82);animation:spop .75s .3s cubic-bezier(.16,1,.3,1) forwards,gradmove 5s 1s ease-in-out infinite;
+}
+#splash .s-bar{
+  width:min(320px,60vw);height:2.5px;border-radius:2px;background:rgba(96,140,190,.18);overflow:hidden;
+  opacity:0;animation:sfade .3s .5s forwards;
+}
+#splash .s-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#3d87c4,#63d3e4,#6ee7a0);animation:sload 1.1s .5s ease-out forwards}
+@keyframes spop{to{opacity:1;transform:scale(1)}}
+@keyframes sfade{to{opacity:1}}
+@keyframes sload{to{width:100%}}
+@media (prefers-reduced-motion: reduce){#splash{display:none}}
+
+/* ===== query-plan journey section ===== */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:22px}
+.stat{
+  border:1px solid var(--border);border-radius:14px;padding:20px 22px;text-align:left;
+  background:rgba(19,30,52,.45);position:relative;
+}
+body.light .stat{background:rgba(255,255,255,.78)}
+.stat .n{font-family:var(--mono);font-weight:700;font-size:2rem;color:var(--text-strong);line-height:1.1}
+.stat .n em{font-style:normal;color:var(--blue);font-size:1.3rem;vertical-align:top}
+.stat .l{font-size:.76rem;color:var(--dim);margin-top:6px}
+.plan{font-family:var(--mono);font-size:.82rem;line-height:2.05}
+.plan .p-row{opacity:0;transform:translateX(-14px);transition:opacity .5s,transform .5s}
+.plan.vis .p-row{opacity:1;transform:none}
+.plan .p-head{color:var(--yellow);font-weight:600}
+.plan .arrow{color:var(--blue);font-weight:600}
+.plan .rel{color:var(--cyan);font-weight:600}
+.plan .yr{color:var(--pink)}
+.plan .note{color:var(--dim)}
+.plan .p-foot{color:var(--dimmer)}
+@media(max-width:600px){.plan{font-size:.72rem}}
+
+/* theme toggle button */
+.theme-btn{
+  display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.72rem;
+  color:var(--dim);border:1px solid var(--border);background:transparent;border-radius:8px;
+  padding:6px 13px;cursor:pointer;transition:all .15s;margin-left:22px;
+}
+.theme-btn:hover{color:var(--text-strong);border-color:var(--border-bright);transform:translateY(-1px)}
 </style>
 </head>
 <body>
-<nav><div class="wrap">
-  <a class="logo" href="#">rithvika<span>.</span></a>
-  <ul><li><a href="#about">About</a></li><li><a href="#projects">Projects</a></li><li><a href="#skills">Skills</a></li><li><a href="#contact">Contact</a></li></ul>
-</div></nav>
+<div id="splash" aria-hidden="true">
+  <div class="s-small"><span class="sp">rithvika=#</span> <span class="sk">CONNECT</span> portfolio;</div>
+  <div class="s-name">Rithvika Devisetti</div>
+  <div class="s-bar"><i></i></div>
+</div>
+<div id="progress"></div>
+<canvas id="fx"></canvas>
+<div class="glow glow-1"></div><div class="glow glow-2"></div><div class="glow glow-3"></div>
 
-<header class="hero"><div class="wrap">
-  <div class="kicker">// student · developer · researcher</div>
-  <h1>Hi, I'm Rithvika.<br>I build things that <em>help people</em>.</h1>
-  <p class="lede">I'm a high school student at North Creek High School in Bothell, WA. I build full-stack web apps for my community, run database performance experiments, and practice competitive programming.</p>
-  <div class="cta">
-    <a class="btn primary" href="#projects">See my work →</a>
-    <a class="btn" href="https://github.com/rithvika1221" target="_blank" rel="noopener">GitHub</a>
-    <a class="btn" href="https://www.linkedin.com/in/rithvika-devisetti-b92a70266" target="_blank" rel="noopener">LinkedIn</a>
-  </div>
-</div></header>
-
-<section id="about"><div class="wrap">
-  <h2>About me</h2>
-  <div class="about-grid">
-    <div>
-      <p>I like problems that sit where technology meets real people — a student who can't find their lost backpack, a teenager who needs a mental-health resource, a local shop that deserves more than a star rating.</p>
-      <p>Most of my projects are full-stack Next.js apps backed by PostgreSQL. I've also gone deeper into how databases behave under load: my research project measures and predicts logical-replication lag in PostgreSQL. Along the way I've sharpened my algorithms through USACO and Java/C++ practice.</p>
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#">
+      <svg class="ico" viewBox="0 0 32 32"><ellipse cx="16" cy="7" rx="11" ry="4.5" fill="#4a90c9"/><path d="M5 7v18c0 2.5 4.9 4.5 11 4.5s11-2 11-4.5V7" fill="none" stroke="#4a90c9" stroke-width="3"/><path d="M5 16c0 2.5 4.9 4.5 11 4.5s11-2 11-4.5" fill="none" stroke="#4a90c9" stroke-width="3"/></svg>
+      rithvika<em>.dev</em>
+    </a>
+    <div style="display:flex;align-items:center">
+      <div class="nav-links">
+        <a href="#about">About</a><a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#academics">Academics</a><a href="#awards">Awards</a><a href="#terminal">psql</a>
+      </div>
+      <button class="theme-btn" id="themeToggle" aria-label="Toggle color theme">&#9789; dark</button>
     </div>
-    <dl class="facts">
-      <dt>School</dt><dd>North Creek High School, Bothell WA</dd>
-      <dt>Focus</dt><dd>Full-stack web · Databases · Algorithms</dd>
-      <dt>Currently</dt><dd>PostgreSQL replication research & community apps</dd>
-    </dl>
   </div>
-</div></section>
+</nav>
 
-<section id="projects"><div class="wrap">
-  <h2>Projects</h2>
-  <p class="sub">A selection of what I've built and studied. Some repositories are private; ask me for a demo.</p>
-  <div class="filters" role="group" aria-label="Filter projects">
-    <button class="on" data-f="all">All</button>
-    <button data-f="web">Web apps</button>
-    <button data-f="research">Research</button>
-    <button data-f="algo">Algorithms</button>
+<div class="wrap">
+
+  <!-- ================= HERO ================= -->
+  <header class="hero">
+    <div>
+      <div class="eyebrow"><span class="dot"></span><span class="prompt">rithvika=#</span>&nbsp;<span class="kw">SELECT</span> * <span class="kw">FROM</span> <span class="id">whoami</span>;</div>
+      <h1>Hi, I'm Rithvika.<br>I think in <span class="grad">tables &amp; queries</span>.</h1>
+      <div class="roles"><span class="cmt">-- also:</span> <span id="roletype"></span><span class="tcur"></span></div>
+      <p class="hero-sub">Junior at North Creek High School in Bothell, WA. I build <b>full-stack apps</b>, research <b>PostgreSQL replication</b>, lead student organizations, and play the violin. This whole site is one big database — go ahead and query it.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#projects">SELECT * FROM projects;</a>
+        <a class="btn btn-ghost" href="https://github.com/rithvika1221">GitHub ↗</a>
+      </div>
+      <div class="chip-row">
+        <span class="chip">PostgreSQL</span><span class="chip">Next.js · React</span><span class="chip">Java</span><span class="chip">Python · PyTorch</span><span class="chip">SQL</span><span class="chip">USACO Gold Qualifier</span>
+      </div>
+    </div>
+    <div class="avatar-card">
+      <div class="avatar-inner">
+        <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gsky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#15263f"/><stop offset="1" stop-color="#0b1424"/>
+            </linearGradient>
+            <radialGradient id="halo" cx="0.5" cy="0.42" r="0.55">
+              <stop offset="0" stop-color="#2c5c8e" stop-opacity=".55"/><stop offset="1" stop-color="#2c5c8e" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <rect width="320" height="320" fill="url(#gsky)"/>
+          <rect width="320" height="320" fill="url(#halo)"/>
+          <g opacity="0.92">
+            <ellipse cx="160" cy="86" rx="72" ry="21" fill="#336791"/>
+            <path d="M88 86 v96 c0 12 32 21 72 21 s72 -9 72 -21 v-96" fill="#26527a"/>
+            <path d="M88 118 c0 12 32 21 72 21 s72 -9 72 -21" fill="none" stroke="#5ba3dc" stroke-width="4"/>
+            <path d="M88 150 c0 12 32 21 72 21 s72 -9 72 -21" fill="none" stroke="#5ba3dc" stroke-width="4"/>
+          </g>
+          <g transform="translate(80,168)">
+            <circle cx="80" cy="62" r="46" fill="#5ba3dc"/>
+            <circle cx="34" cy="52" r="22" fill="#5ba3dc"/>
+            <circle cx="126" cy="52" r="22" fill="#5ba3dc"/>
+            <circle cx="34" cy="52" r="12" fill="#336791"/>
+            <circle cx="126" cy="52" r="12" fill="#336791"/>
+            <path d="M80 76 q6 24 22 32" stroke="#5ba3dc" stroke-width="14" fill="none" stroke-linecap="round"/>
+            <circle cx="64" cy="56" r="6" fill="#0a0f1c"/>
+            <circle cx="96" cy="56" r="6" fill="#0a0f1c"/>
+            <circle cx="66.2" cy="53.8" r="2.1" fill="#f2f7fd"/>
+            <circle cx="98.2" cy="53.8" r="2.1" fill="#f2f7fd"/>
+          </g>
+          <text x="160" y="300" text-anchor="middle" font-size="13" fill="#7d93ad" font-family="monospace">/* photo coming soon */</text>
+        </svg>
+      </div>
+      <div class="avatar-cap">ALTER TABLE me ADD COLUMN photo bytea; <span style="opacity:.6">-- pending</span></div>
+    </div>
+  </header>
+
+  <!-- ================= TERMINAL STRIP ================= -->
+  <div class="term reveal" id="boot">
+    <div class="term-bar"><span class="tdot r"></span><span class="tdot y"></span><span class="tdot g"></span><span class="term-title">rithvika@dev: ~/portfolio — psql</span></div>
+    <div class="term-body">
+      <div class="ln c-dim">$ <span class="c-white">psql -h rithvika.dev -U visitor -d rithvika</span></div>
+      <div class="ln c-dim" data-t>psql (17.5, student 17.0) · SSL: TLSv1.3, cipher: CURIOSITY_AES_256</div>
+      <div class="ln c-dim" data-t>Type "help" for help. You are connected as a very welcome guest.</div>
+      <div class="ln" data-t>&nbsp;</div>
+      <div class="ln" data-t><span class="prompt">rithvika=#</span> <span class="kw">SELECT</span> name, role, loves <span class="kw">FROM</span> <span class="ident">whoami</span>;</div>
+      <div class="ln c-green" data-t> name  │ Rithvika Devisetti</div>
+      <div class="ln c-green" data-t> role  │ high school junior · full-stack builder · database enthusiast</div>
+      <div class="ln c-green" data-t> loves │ PostgreSQL, clean schemas, and ideas that help real people</div>
+      <div class="ln c-dimmer" data-t>(1 row)</div>
+      <div class="ln" data-t><span class="prompt">rithvika=#</span> <span class="cursor"></span></div>
+    </div>
   </div>
-  <div class="grid">
 
-    <article class="card featured" data-c="research">
-      <div class="cat">Research · Databases</div>
-      <h3>Predicting Logical Replication Lag in PostgreSQL</h3>
-      <p>An independent research study of how PostgreSQL logical replication behaves under changing write throughput and network latency. I built a repeatable experiment matrix, measured publisher-side cost (CPU, WAL generation, commit latency) and subscriber lag over time, and used the data to train models that predict lag for early warning and capacity planning.</p>
-      <div class="tags"><span>PostgreSQL</span><span>Python</span><span>Shell</span><span>WAL analysis</span><span>ML</span></div>
-      <a class="link" href="https://github.com/rithvika1221/Postgres_Research" target="_blank" rel="noopener">View repository →</a>
-    </article>
+  <!-- ================= SCHEMA BROWSER ================= -->
+  <section id="schema" class="reveal">
+    <div class="sec-head">
+      <div class="sec-query"><span class="prompt">rithvika=#</span> \dt <span style="opacity:.6">-- list all tables</span></div>
+      <h2>Browse the schema</h2>
+      <p class="sec-sub">Every section of this site is a table. Click one to query it.</p>
+    </div>
+    <div class="schema-grid">
+      <a class="schema-item" href="#about"><div class="tname">about_me</div><div class="trows">1 row</div><div class="tdesc">who I am, in more than one row of text</div></a>
+      <a class="schema-item" href="#interests"><div class="tname">interests</div><div class="trows">6 rows</div><div class="tdesc">what keeps me up at night (happily)</div></a>
+      <a class="schema-item" href="#interests"><div class="tname">hobbies</div><div class="trows">5 rows</div><div class="tdesc">life outside the terminal</div></a>
+      <a class="schema-item" href="#projects"><div class="tname">projects</div><div class="trows">6 rows</div><div class="tdesc">things I've built and researched</div></a>
+      <a class="schema-item" href="#experience"><div class="tname">experience</div><div class="trows">8 rows</div><div class="tdesc">internships, leadership, community</div></a>
+      <a class="schema-item" href="#academics"><div class="tname">academics</div><div class="trows">10 rows</div><div class="tdesc">coursework — some columns are private</div></a>
+      <a class="schema-item" href="#awards"><div class="tname">awards</div><div class="trows">5 rows</div><div class="tdesc">trophies &amp; qualifications</div></a>
+      <a class="schema-item" href="#skills"><div class="tname">skills</div><div class="trows">4 rows</div><div class="tdesc">languages, frameworks, databases, tools</div></a>
+      <a class="schema-item" href="#contact"><div class="tname">contact</div><div class="trows">2 rows</div><div class="tdesc">where to find me</div></a>
+    </div>
+  </section>
 
-    <article class="card" data-c="web">
-      <div class="cat">Web app · Community</div>
-      <h3>MindMission</h3>
-      <p>A website for a youth mental-health initiative that brings workshops and awareness events into schools, and connects teens with counselors, helplines and trusted resources. Includes event registration and a light encouragement chatbot.</p>
-      <div class="tags"><span>Next.js</span><span>PostgreSQL</span><span>Google Sheets API</span></div>
-      <span class="link private">Private repository</span>
-    </article>
+  <!-- ================= ABOUT ================= -->
+  <section id="about" class="reveal">
+    <div class="sec-head">
+      <div class="sec-query"><span class="prompt">rithvika=#</span> <span class="kw">SELECT</span> story <span class="kw">FROM</span> <span class="ident">about_me</span>;</div>
+      <h2>About me</h2>
+    </div>
+    <div class="about-grid">
+      <div class="panel about-prose">
+        <p>I'm Rithvika Devisetti, a high school junior from Bothell, Washington. Most people meet databases in a textbook; I met them while building things — and I never really left. What started with a GPA-calculator web app for an FBLA competition turned into full-stack platforms, research automation for a University of Washington lab, and eventually independent research on <span class="hl">PostgreSQL logical replication</span>.</p>
+        <p>I love the moment when a messy real-world problem turns into a clean schema — when "we need to track businesses, reviews, and bookings" becomes tables, relations, and constraints that just <i>work</i>. That same instinct for structure shows up everywhere: in the nonprofit I founded, in the honor society I lead, and even in orchestra, where sixty musicians somehow commit one transaction of sound together.</p>
+        <p>Outside of code, I care a lot about people. I founded <span class="hl">Mind Mission</span>, a student-run nonprofit for mental health awareness, and I serve as Western Regional Director for Address Teen Stress. Technology is my favorite tool — community is the reason I build.</p>
+      </div>
+      <div class="panel facts">
+        <div class="fact"><span class="k">school</span><span class="v">North Creek High School</span></div>
+        <div class="fact"><span class="k">class_of</span><span class="v">2027</span></div>
+        <div class="fact"><span class="k">base</span><span class="v">Bothell, WA</span></div>
+        <div class="fact"><span class="k">favorite_db</span><span class="v">PostgreSQL 🐘</span></div>
+        <div class="fact"><span class="k">instrument</span><span class="v">Violin (since 5th grade)</span></div>
+        <div class="fact"><span class="k">founded</span><span class="v">Mind Mission (nonprofit)</span></div>
+        <div class="fact"><span class="k">currently</span><span class="v">predicting replication lag</span></div>
+      </div>
+    </div>
+  </section>
 
-    <article class="card" data-c="web">
-      <div class="cat">Web & iOS app · Local business</div>
-      <h3>ListingHub (Neighborly)</h3>
-      <p>A local business directory built around an ongoing relationship between businesses and their regulars — follows, updates and specials — instead of just star ratings. Includes a claim-your-listing flow, admin approval and an iOS build via Capacitor.</p>
-      <div class="tags"><span>Next.js</span><span>TypeScript</span><span>Capacitor</span><span>PostgreSQL</span></div>
-      <span class="link private">Private repository</span>
-    </article>
+  <!-- ================= INTERESTS + HOBBIES ================= -->
+  <section id="interests" class="reveal">
+    <div class="sec-head">
+      <div class="sec-query"><span class="prompt">rithvika=#</span> <span class="kw">SELECT</span> * <span class="kw">FROM</span> <span class="ident">interests</span> <span class="kw">FULL JOIN</span> <span class="ident">hobbies</span> <span class="kw">ON</span> true;</div>
+      <h2>Interests &amp; hobbies</h2>
+    </div>
+    <div class="duo">
+      <div class="panel">
+        <h3>interests · ORDER BY obsession DESC</h3>
+        <div class="list-tight">
+          <div class="li-row"><span class="k">postgresql</span><span class="v">replication, indexing, query planning — the most fun I've had with a computer</span></div>
+          <div class="li-row"><span class="k">full_stack</span><span class="v">schema → API → UI, end to end, with Next.js and React</span></div>
+          <div class="li-row"><span class="k">machine_learning</span><span class="v">PyTorch + pandas; best when it predicts something concrete</span></div>
+          <div class="li-row"><span class="k">competitive_prog</span><span class="v">USACO puzzles with a scoreboard — Gold division qualifier</span></div>
+          <div class="li-row"><span class="k">entrepreneurship</span><span class="v">product strategy &amp; market research at Harvard's HUVTSP</span></div>
+          <div class="li-row"><span class="k">automation</span><span class="v">replacing hours of manual work with a script that runs in seconds</span></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>hobbies · stored as JSONB, obviously</h3>
+        <div class="list-tight">
+          <div class="li-row"><span class="k">"violin"</span><span class="v">school orchestra since 5th grade — my longest-running process</span></div>
+          <div class="li-row"><span class="k">"mentoring"</span><span class="v">teaching assistant &amp; alumni at Mana Samskriti, my cultural community since 2018</span></div>
+          <div class="li-row"><span class="k">"advocacy"</span><span class="v">organizing mental-health workshops and writing wellness content</span></div>
+          <div class="li-row"><span class="k">"competitions"</span><span class="v">FBLA programming events — part coding, part presenting, all adrenaline</span></div>
+          <div class="li-row"><span class="k">"tinkering"</span><span class="v">side projects, benchmarks, and "what happens if I turn this knob?"</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <article class="card" data-c="web">
-      <div class="cat">Web app · School</div>
-      <h3>ReturnPoint</h3>
-      <p>A lost-and-found system for schools. Students and staff sign in with Google or Facebook, report and search lost items with photos, and staff manage claims through role-based access.</p>
-      <div class="tags"><span>Next.js</span><span>PostgreSQL</span><span>OAuth</span></div>
-      <span class="link private">Private repository</span>
-    </article>
+  <!-- ================= PROJECTS ================= -->
+  <section id="projects" class="reveal">
+    <div class="sec-head">
+      <div class="sec-query"><span class="prompt">rithvika=#</span> <span class="kw">SELECT</span> * <span class="kw">FROM</span> <span class="ident">projects</span> <span class="kw">ORDER BY</span> impact <span class="kw">DESC</span>;</div>
+      <h2>Projects</h2>
+      <p class="sec-sub">Full source and more experiments at <a href="https://github.com/rithvika1221">github.com/rithvika1221</a>.</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-top"><div class="tname">pg_replication_lag</div><span class="badge">independent research</span></div>
+        <div class="tmeta">Nov 2025 · research</div>
+        <p>Predictive modeling of <b>PostgreSQL logical replication lag</b> under high-throughput workloads. Controlled workload experiments, large-scale metric ingestion, and a model that predicts when replicas fall behind — before they do.</p>
+        <div class="tags"><span>PostgreSQL</span><span>Python</span><span>ML</span><span>benchmarking</span></div>
+      </div>
+      <div class="card">
+        <div class="card-top"><div class="tname">neighbourly</div></div>
+        <div class="tmeta">Aug 2025 – present · full-stack platform</div>
+        <p>A local business discovery platform: search, reviews, favorites, bookings, AI chatbot support, owner dashboards with analytics, and admin approval workflows — database-driven with SSR and secure auth.</p>
+        <div class="tags"><span>Next.js 15</span><span>React 19</span><span>TypeScript</span><span>Vercel Postgres</span><span>NextAuth</span><span>Maps API</span><span>OpenAI</span></div>
+      </div>
+      <div class="card">
+        <div class="card-top"><div class="tname">seal_lab_automation</div><span class="badge">UW research lab</span></div>
+        <div class="tmeta">Jun – Aug 2024 · University of Washington SEAL Lab</div>
+        <p>Automated energy-assessment reporting for UW's Industrial Assessment Center. JavaScript + Apps Script pipelines to search, clean, and summarize industrial data — supporting <b>50+ professional reports</b>.</p>
+        <div class="tags"><span>JavaScript</span><span>Apps Script</span><span>data automation</span></div>
+      </div>
+      <div class="card">
+        <div class="card-top"><div class="tname">mythic_pathways</div></div>
+        <div class="tmeta">Jan 2025 · FBLA project</div>
+        <p>An interactive storytelling web app where users shape their own adventure through dynamic choices — custom branching-narrative logic with an immersive, user-tested interface.</p>
+        <div class="tags"><span>React</span><span>Next.js</span><span>Tailwind CSS</span></div>
+      </div>
+      <div class="card">
+        <div class="card-top"><div class="tname">grademaster</div></div>
+        <div class="tmeta">Jan 2024 · FBLA project</div>
+        <p>A GPA calculator web app with AI features that helps students track academic performance — built for FBLA and refined through rounds of real user feedback.</p>
+        <div class="tags"><span>React</span><span>Next.js</span><span>Tailwind CSS</span><span>AI</span></div>
+      </div>
+      <div class="card">
+        <div class="card-top"><div class="tname">girls_who_code</div></div>
+        <div class="tmeta">2023 – 2024 · summer immersion &amp; competitions</div>
+        <p>Creative coding projects built with JavaScript and p5.js through Girls Who Code's Summer Immersion Program and competitions, with mentorship from industry engineers.</p>
+        <div class="tags"><span>JavaScript</span><span>p5.js</span></div>
+      </div>
+    </div>
+  </section>
 
-    <article class="card" data-c="web">
-      <div class="cat">Web app · Storytelling</div>
-      <h3>Mythic Pathways</h3>
-      <p>An interactive storytelling site that retells mythology — starting with the Ramayana — as a series of illustrated story parts, backed by a Vercel Postgres data layer with parameterized SQL.</p>
-      <div class="tags"><span>Next.js</span><span>Vercel Postgres</span><span>SQL</span></div>
-      <span class="link private">Private repository</span>
-    </article>
+  <!-- ================= EXPERIENCE ================= -->
+  <section id="experience" class="reveal">
+    <div class="sec-head">
+      <div class="sec-query"><span class="prompt">rithvika=#</span> <span class="kw">SELECT</span> org, role <span class="kw">FROM</span> <span class="ident">experience</span> <span class="kw">ORDER BY</span> start_date <span class="kw">DESC</span>;</div>
+      <h2>Experience &amp; leadership</h2>
+    </div>
+    <div class="panel">
+      <div class="timeline">
+        <div class="t-item"><div class="t-head"><span class="t-org">FBLA — Industry Relations</span><span class="t-role">team member &amp; competitor</span><span class="t-date">2025 – now</span></div><div class="t-desc">Industry outreach plus competing in programming &amp; business presentation events.</div></div>
+        <div class="t-item"><div class="t-head"><span class="t-org">Harvard HUVTSP</span><span class="t-role">summer intern</span><span class="t-date">2025</span></div><div class="t-desc">Selected for the Harvard Undergraduate Ventures–TECH Summer Program; market research, business analysis &amp; product strategy on startup teams.</div></div>
+        <div class="t-item"><div class="t-head"><span class="t-org">Rove</span><span class="t-role">intern (via HUVTSP)</span><span class="t-date">2025</span></div><div class="t-desc">Travel-tech projects: user research and data-driven business recommendations.</div></div>
+        <div class="t-item"><div class="t-head"><span class="t-org">Address Teen Stress</span><span class="t-role">Western Regional Director</span><span class="t-date">2024 – now</span></div><div class="t-desc">Leading regional outreach and partnerships for teen mental health.</div></div>
+        <div class="t-item"><div class="t-head"><span class="t-org">Mind Mission</span><span class="t-role">founder &amp; president</span><span class="t-date">2024 – now</span></div><div class="t-desc">Founded a student-run nonprofit for mental health awareness; manage a team of writers &amp; volunteers.</div></div>
+        <div class="t-item"><div class="t-head"><span class="t-org">Advanced Technology Honor Society</span><span class="t-role">president</span><span class="t-date">2024 – now</span></div><div class="t-desc">Leading a tech honor society at NCHS; organizing student projects and technical events.</div></div>
+        <div class="t-item"><div class="t-head"><span class="t-org">NCHS Counseling Advisory Council</span><span class="t-role">member</span><span class="t-date">2023 – now</span></div><div class="t-desc">Working with counselors to improve student mental-health resources.</div></div>
+        <div class="t-item"><div class="t-head"><span class="t-org">Girls Who Code</span><span class="t-role">competition manager · SIP</span><span class="t-date">2023 – 24</span></div><div class="t-desc">Led club competition teams; Summer Immersion Program participant.</div></div>
+      </div>
+    </div>
+  </section>
 
-    <article class="card" data-c="web">
-      <div class="cat">Web app · Students</div>
-      <h3>GPA Calculator</h3>
-      <p>A dashboard where students sign in, enter courses and grades, and track their GPA, with a separate API service and deployment.</p>
-      <div class="tags"><span>Next.js</span><span>TypeScript</span><span>Tailwind</span><span>Auth</span></div>
-      <a class="link" href="https://github.com/rithvika1221/GPACalculator" target="_blank" rel="noopener">View repository →</a>
-    </article>
+  <!-- ================= ACADEMICS ================= -->
+  <section id="academics" class="reveal">
+    <div class="sec-head">
+      <div class="sec-query"><span class="prompt">rithvika=#</span> <span class="kw">SELECT</span> course <span class="kw">FROM</span> <span class="ident">academics</span>; <span style="opacity:.6">-- Class of 2027, coursework only</span></div>
+      <h2>Academics</h2>
+    </div>
+    <div class="panel">
+      <div class="course-grid">
+        <span class="course">Advanced Programming Topics<em>CS</em></span>
+        <span class="course">AP Computer Science A<em>CS</em></span>
+        <span class="course">AP Computer Science Principles<em>CS</em></span>
+        <span class="course">AP Calculus AB<em>math</em></span>
+        <span class="course">AP Physics 1<em>science</em></span>
+        <span class="course">AP Environmental Science<em>science</em></span>
+        <span class="course">AP English Language<em>humanities</em></span>
+        <span class="course">AP English Literature<em>humanities</em></span>
+        <span class="course">AP World History<em>humanities</em></span>
+        <span class="course">AP Human Geography<em>humanities</em></span>
+      </div>
+      <div class="errblock">
+        <div><span class="prompt">rithvika=#</span> <span class="kw">SELECT</span> gpa, test_scores <span class="kw">FROM</span> <span class="ident">academics</span>;</div>
+        <div class="c-red">ERROR:  permission denied for columns "gpa", "test_scores"</div>
+        <div class="c-dim">HINT:  Row-level security is enabled. Some data stays between me and the admissions office.</div>
+      </div>
+    </div>
+  </section>
 
-    <article class="card" data-c="research">
-      <div class="cat">Data · Tooling</div>
-      <h3>Local Business Ingestor</h3>
-      <p>A Python script that pulls local-business data and loads it into PostgreSQL — the data pipeline behind ListingHub.</p>
-      <div class="tags"><span>Python</span><span>PostgreSQL</span></div>
-      <a class="link" href="https://github.com/rithvika1221/local-business-ingestor" target="_blank" rel="noopener">View repository →</a>
-    </article>
+  <!-- ================= AWARDS ================= -->
+  <section id="awards" class="reveal">
+    <div class="sec-head">
+      <div class="sec-query"><span class="prompt">rithvika=#</span> <span class="kw">SELECT</span> award, event, year <span class="kw">FROM</span> <span class="ident">awards</span> <span class="kw">ORDER BY</span> year <span class="kw">DESC</span>;</div>
+      <h2>Awards &amp; honors</h2>
+    </div>
+    <div class="award-grid">
+      <div class="award"><div class="a-emoji">🏆</div><div class="a-title">3rd Place — Intro to Programming</div><div class="a-sub">FBLA National Leadership Conference</div><div class="a-year">2025</div></div>
+      <div class="award"><div class="a-emoji">🥇</div><div class="a-title">1st Place — Intro to Programming</div><div class="a-sub">FBLA Washington State Conference</div><div class="a-year">2025</div></div>
+      <div class="award"><div class="a-emoji">⭐</div><div class="a-title">Gold Division Qualifier</div><div class="a-sub">USA Computing Olympiad (USACO)</div><div class="a-year">2025</div></div>
+      <div class="award"><div class="a-emoji">🏅</div><div class="a-title">4th Place — Intro to Programming</div><div class="a-sub">FBLA Washington State Conference</div><div class="a-year">2024</div></div>
+      <div class="award"><div class="a-emoji">📜</div><div class="a-title">Certifications</div><div class="a-sub">Java Programming (Duke) · Full Website with WordPress</div><div class="a-year">—</div></div>
+    </div>
+  </section>
 
-    <article class="card" data-c="research">
-      <div class="cat">Open source · Audio</div>
-      <h3>Arco (fork)</h3>
-      <p>My working fork of Arco, an embeddable sound-synthesis engine by Roger B. Dannenberg that patches FAUST unit generators and is controlled over the O2 protocol.</p>
-      <div class="tags"><span>C++</span><span>FAUST</span><span>O2</span></div>
-      <a class="link" href="https://github.com/rithvika1221/rithvika-arco" target="_blank" rel="noopener">View repository →</a>
-    </article>
+  <!-- ================= SKILLS ================= -->
+  <section id="skills" class="reveal">
+    <div class="sec-head">
+      <div class="sec-query"><span class="prompt">rithvika=#</span> <span class="kw">SELECT</span> category, unnest(items) <span class="kw">FROM</span> <span class="ident">skills</span>;</div>
+      <h2>Skills</h2>
+    </div>
+    <div class="skill-grid">
+      <div class="skill-col"><div class="s-head">languages</div><ul><li><b>Java</b></li><li><b>Python</b> — pandas, NumPy, Matplotlib, PyTorch</li><li><b>SQL</b></li><li><b>JavaScript / TypeScript</b></li><li>HTML &amp; CSS</li></ul></div>
+      <div class="skill-col"><div class="s-head">databases</div><ul><li><b>PostgreSQL</b> — replication &amp; performance</li><li><b>MySQL</b> + Workbench</li><li>JDBC</li><li>Schema design</li></ul></div>
+      <div class="skill-col"><div class="s-head">frameworks</div><ul><li><b>Next.js</b> &amp; <b>React</b></li><li>Spring Boot</li><li>Tailwind CSS</li><li>Bootstrap</li></ul></div>
+      <div class="skill-col"><div class="s-head">tools</div><ul><li>VS Code · Eclipse</li><li>Google Apps Script</li><li>Vercel</li><li>Git</li></ul></div>
+    </div>
+  </section>
 
-    <article class="card" data-c="algo">
-      <div class="cat">Competitive programming</div>
-      <h3>USACO Solutions</h3>
-      <p>My solutions to USACO Bronze and Silver problems — recursion, subsets, simulation, graphs and more.</p>
-      <div class="tags"><span>C++</span><span>Java</span><span>Algorithms</span></div>
-      <a class="link" href="https://github.com/rithvika1221/usaco" target="_blank" rel="noopener">View repository →</a>
-    </article>
+  <!-- ================= JOURNEY (query plan) ================= -->
+  <section id="journey" class="reveal">
+    <div class="sec-head">
+      <div class="sec-query"><span class="prompt">rithvika=#</span> <span class="kw">EXPLAIN ANALYZE</span> <span class="kw">SELECT</span> future <span class="kw">FROM</span> <span class="ident">rithvika</span>;</div>
+      <h2>The query plan</h2>
+      <p class="sec-sub">How I got here — every step feeds the next one.</p>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="n"><span class="cnt" data-n="6">0</span><em>+</em></div><div class="l">projects built &amp; shipped</div></div>
+      <div class="stat"><div class="n"><span class="cnt" data-n="10">0</span></div><div class="l">AP &amp; advanced courses</div></div>
+      <div class="stat"><div class="n"><span class="cnt" data-n="5">0</span></div><div class="l">leadership roles</div></div>
+      <div class="stat"><div class="n"><span class="cnt" data-n="7">0</span><em>+</em></div><div class="l">years playing violin</div></div>
+    </div>
+    <div class="panel">
+      <div class="plan" id="plan">
+        <div class="p-row p-head">Nested Loop&nbsp;&nbsp;(cost=curiosity..limitless)&nbsp;&nbsp;(actual time=2019..2027)</div>
+        <div class="p-row">&nbsp;&nbsp;<span class="arrow">-&gt;</span> Seq Scan on <span class="rel">violin</span> <span class="yr">(2019 – now)</span> <span class="note">— first instrument, process still running</span></div>
+        <div class="p-row">&nbsp;&nbsp;<span class="arrow">-&gt;</span> Index Scan on <span class="rel">girls_who_code</span> <span class="yr">(2023)</span> <span class="note">— found programming, never looked back</span></div>
+        <div class="p-row">&nbsp;&nbsp;<span class="arrow">-&gt;</span> Hash Join on <span class="rel">uw_seal_lab</span> <span class="yr">(2024)</span> <span class="note">— first research: automating 50+ reports</span></div>
+        <div class="p-row">&nbsp;&nbsp;<span class="arrow">-&gt;</span> Parallel Append on <span class="rel">mind_mission, address_teen_stress</span> <span class="yr">(2024)</span> <span class="note">— founded &amp; led nonprofits</span></div>
+        <div class="p-row">&nbsp;&nbsp;<span class="arrow">-&gt;</span> Index Scan on <span class="rel">harvard_huvtsp</span> <span class="yr">(2025)</span> <span class="note">— startups, strategy, teamwork</span></div>
+        <div class="p-row">&nbsp;&nbsp;<span class="arrow">-&gt;</span> Aggregate on <span class="rel">pg_replication_research</span> <span class="yr">(2025)</span> <span class="note">— independent PostgreSQL research</span></div>
+        <div class="p-row">&nbsp;&nbsp;<span class="arrow">-&gt;</span> Result: <span class="rel">class_of_2027</span> <span class="yr">(loading…)</span></div>
+        <div class="p-row p-foot">Planning Time: ongoing</div>
+        <div class="p-row p-foot">Execution Time: just getting started</div>
+      </div>
+    </div>
+  </section>
 
-  </div>
-</div></section>
+  <!-- ================= INTERACTIVE TERMINAL ================= -->
+  <section id="terminal" class="reveal">
+    <div class="sec-head">
+      <div class="sec-query"><span class="prompt">rithvika=#</span> <span style="opacity:.6">-- your turn</span></div>
+      <h2>Try the shell</h2>
+      <p class="sec-sub">This prompt is real. Try <code style="color:var(--cyan)">\dt</code>, <code style="color:var(--cyan)">\d projects</code>, or a SELECT.</p>
+    </div>
+    <div id="iterm" onclick="document.getElementById('iterm-input').focus()">
+      <div class="term-bar"><span class="tdot r"></span><span class="tdot y"></span><span class="tdot g"></span><span class="term-title">rithvika-sql — interactive</span></div>
+      <div class="term-body">
+        <div id="iterm-out">
+          <div class="ln c-dim">Welcome to rithvika-sql, the interactive portfolio shell.</div>
+          <div class="ln c-dim">Type <span class="c-cyan">help</span> for commands. Try <span class="c-cyan">SELECT * FROM hobbies;</span></div>
+          <div class="ln">&nbsp;</div>
+        </div>
+        <div id="iterm-input-row">
+          <span class="prompt">rithvika=#</span><input id="iterm-input" autocomplete="off" spellcheck="false" aria-label="SQL terminal input">
+        </div>
+      </div>
+    </div>
+    <div class="hint-keys">supported: <code>help</code> · <code>\dt</code> · <code>\d &lt;table&gt;</code> · <code>SELECT * FROM &lt;table&gt;;</code> · <code>SELECT gpa FROM academics;</code> · <code>\q</code></div>
+  </section>
 
-<section id="skills"><div class="wrap">
-  <h2>Skills</h2>
-  <p class="sub">Tools I reach for most.</p>
-  <div class="skills">
-    <div><h4>Languages</h4><ul><li>JavaScript</li><li>TypeScript</li><li>Python</li><li>Java</li><li>C++</li><li>SQL</li></ul></div>
-    <div><h4>Web</h4><ul><li>Next.js</li><li>React</li><li>Tailwind CSS</li><li>Spring Boot</li><li>OAuth</li></ul></div>
-    <div><h4>Data</h4><ul><li>PostgreSQL</li><li>Logical replication</li><li>Performance testing</li></ul></div>
-    <div><h4>Tools</h4><ul><li>Git & GitHub</li><li>Vercel</li><li>VS Code</li><li>Capacitor</li></ul></div>
-  </div>
-</div></section>
+  <!-- ================= CONTACT ================= -->
+  <section id="contact" class="reveal">
+    <div class="sec-head">
+      <div class="sec-query"><span class="prompt">rithvika=#</span> <span class="kw">SELECT</span> * <span class="kw">FROM</span> <span class="ident">contact</span>;</div>
+      <h2>Let's connect</h2>
+    </div>
+    <div class="contact-row">
+      <a class="contact-btn" href="https://github.com/rithvika1221"><div><div class="c-k">github</div><div class="c-v">github.com/rithvika1221 ↗</div></div></a>
+      <a class="contact-btn" href="https://www.linkedin.com/in/rithvika-devisetti-b92a70266"><div><div class="c-k">linkedin</div><div class="c-v">Rithvika Devisetti ↗</div></div></a>
+    </div>
+  </section>
 
-<section id="contact" class="contact"><div class="wrap">
-  <h2>Let's connect</h2>
-  <p class="sub" style="margin-left:auto;margin-right:auto">I'm always happy to talk about projects, research or ideas for helping my community with technology.</p>
-  <div class="cta">
-    <a class="btn primary" href="https://www.linkedin.com/in/rithvika-devisetti-b92a70266" target="_blank" rel="noopener">Message me on LinkedIn</a>
-    <a class="btn" href="https://github.com/rithvika1221" target="_blank" rel="noopener">Follow on GitHub</a>
-  </div>
-</div></section>
+  <footer>
+    <div class="fq"><span class="prompt">rithvika=#</span> \q</div>
+    <div>connection closed. thanks for visiting — commit often, index wisely.</div>
+    <div style="margin-top:8px">© 2026 Rithvika Devisetti<span class="sep">│</span>built with HTML, CSS &amp; a love of PostgreSQL<span class="sep">│</span>hosted on <a href="https://vercel.com">Vercel</a></div>
+  </footer>
 
-<footer>© <span id="y"></span> Rithvika Devisetti · Hosted on GitHub Pages</footer>
+</div>
 
 <script>
-document.getElementById('y').textContent=new Date().getFullYear();
-document.querySelectorAll('.filters button').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));
-  const f=b.dataset.f;
-  document.querySelectorAll('.card').forEach(c=>c.classList.toggle('hidden',f!=='all'&&c.dataset.c!==f));
-}));
+/* boot typing animation */
+(function(){
+  const lines = Array.from(document.querySelectorAll('#boot [data-t]'));
+  lines.forEach(l => { l.dataset.html = l.innerHTML; l.innerHTML = '&nbsp;'; l.style.visibility='hidden'; });
+  let started = false, i = 0;
+  function next(){
+    if(i >= lines.length) return;
+    const l = lines[i++];
+    l.style.visibility='visible';
+    l.innerHTML = l.dataset.html;
+    setTimeout(next, 140);
+  }
+  const bo = new IntersectionObserver(es => es.forEach(e => {
+    if(e.isIntersecting && !started){ started = true; setTimeout(next, 300); bo.disconnect(); }
+  }), {threshold:.25});
+  bo.observe(document.getElementById('boot'));
+})();
+
+/* scroll reveal */
+const io = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting){ e.target.classList.add('vis'); io.unobserve(e.target);} }), {threshold:.07});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* interactive terminal */
+const DB = {
+  about_me: [["story","junior @ North Creek HS · builder · database enthusiast · violinist · nonprofit founder"]],
+  interests: [["postgresql","replication & performance research"],["full-stack dev","Next.js, React, TypeScript"],["machine learning","PyTorch"],["competitive programming","USACO Gold qualifier"],["entrepreneurship","Harvard HUVTSP '25"],["data automation","scripts > spreadsheets"]],
+  hobbies: [["violin","since 5th grade"],["mentoring","Mana Samskriti TA"],["advocacy","mental health workshops"],["competitions","FBLA programming events"],["tinkering","benchmarks & side projects"]],
+  projects: [["pg_replication_lag","predicting Postgres replication lag (independent research)"],["neighbourly","full-stack local business platform on Vercel Postgres"],["seal_lab_automation","UW research lab data automation, 50+ reports"],["mythic_pathways","branching-story web app (FBLA)"],["grademaster","AI-assisted GPA calculator (FBLA)"],["girls_who_code","creative coding with p5.js"]],
+  experience: [["Harvard HUVTSP","intern '25"],["Rove","intern '25"],["Mind Mission","founder & president"],["Address Teen Stress","western regional director"],["ATHS","president"],["FBLA","industry relations & competitor"],["Counseling Advisory Council","member"],["Girls Who Code","competition manager"]],
+  academics: [["Advanced Programming Topics",""],["AP Computer Science A",""],["AP Computer Science Principles",""],["AP Calculus AB",""],["AP Physics 1",""],["AP Environmental Science",""],["AP English Language",""],["AP English Literature",""],["AP World History",""],["AP Human Geography",""]],
+  awards: [["3rd — Intro to Programming","FBLA Nationals 2025"],["1st — Intro to Programming","FBLA WA State 2025"],["USACO Gold Qualifier","USA Computing Olympiad"],["4th — Intro to Programming","FBLA WA State 2024"],["certifications","Java Programming (Duke) · WordPress"]],
+  skills: [["languages","Java · Python · SQL · JS/TS"],["databases","PostgreSQL · MySQL · JDBC"],["frameworks","Next.js · React · Spring Boot"],["tools","VS Code · Eclipse · Vercel · Git"]],
+  contact: [["github","github.com/rithvika1221"],["linkedin","linkedin.com/in/rithvika-devisetti"]]
+};
+const out = document.getElementById('iterm-out');
+const inp = document.getElementById('iterm-input');
+function print(html, cls){ const d = document.createElement('div'); d.className = 'ln' + (cls?' '+cls:''); d.innerHTML = html || '&nbsp;'; out.appendChild(d); }
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+function printTable(rows){
+  const w1 = Math.max(...rows.map(r => r[0].length));
+  rows.forEach(r => print('<span class="c-cyan">' + esc(r[0].padEnd(w1)) + '</span>' + (r[1] ? ' <span class="c-dim">│</span> ' + esc(r[1]) : '')));
+  print('(' + rows.length + ' rows)', 'c-dimmer');
+}
+function run(cmdRaw){
+  const cmd = cmdRaw.trim();
+  print('<span class="prompt">rithvika=#</span> ' + esc(cmdRaw), '');
+  if(!cmd) return;
+  const c = cmd.toLowerCase().replace(/;+$/,'');
+  if(c === 'help'){
+    print('Commands: \\dt · \\d &lt;table&gt; · SELECT * FROM &lt;table&gt; · \\q · clear', 'c-dim');
+    print('Tables: ' + Object.keys(DB).join(', '), 'c-dim');
+  } else if(c === 'clear'){ out.innerHTML=''; }
+  else if(c === '\\q'){ print('connection closed... just kidding, you can\'t leave that easily. 🐘', 'c-yellow'); }
+  else if(c === '\\dt'){ printTable(Object.keys(DB).map(k => [k, DB[k].length + ' rows'])); }
+  else if(c.startsWith('\\d ')){
+    const t = c.slice(3).trim();
+    if(DB[t]) printTable(DB[t]);
+    else print('ERROR:  relation "' + esc(t) + '" does not exist', 'c-red');
+  }
+  else if(/gpa|test_scores|score|sat|act/.test(c)){
+    print('ERROR:  permission denied for column "gpa"', 'c-red');
+    print('HINT:  nice try. row-level security is enabled on that one. 🔒', 'c-dim');
+  }
+  else if(c.startsWith('drop')){
+    print('ERROR:  must be owner of database rithvika', 'c-red');
+    print('HINT:  you didn\'t really think that would work, did you?', 'c-dim');
+  }
+  else {
+    const m = c.match(/select\s+.+\s+from\s+([a-z_]+)/);
+    if(m){
+      if(DB[m[1]]) printTable(DB[m[1]]);
+      else print('ERROR:  relation "' + esc(m[1]) + '" does not exist\nHINT:  try \\dt to list tables', 'c-red');
+    } else {
+      print('ERROR:  syntax error at or near "' + esc(cmd.split(/\s/)[0]) + '"', 'c-red');
+      print('HINT:  type help for supported commands', 'c-dim');
+    }
+  }
+  print('');
+  inp.scrollIntoView({block:'nearest'});
+}
+inp.addEventListener('keydown', e => {
+  if(e.key === 'Enter'){ run(inp.value); inp.value=''; }
+});
+
+/* ===== v3 effects ===== */
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* theme toggle (light by default) */
+(function(){
+  const btn = document.getElementById('themeToggle');
+  function apply(t){
+    document.body.classList.toggle('light', t === 'light');
+    btn.innerHTML = t === 'light' ? '&#9789; dark' : '&#9728; light';
+    try{ localStorage.setItem('theme', t) }catch(e){}
+  }
+  let t = 'light';
+  try{ t = localStorage.getItem('theme') || 'light' }catch(e){}
+  apply(t);
+  btn.addEventListener('click', () => apply(document.body.classList.contains('light') ? 'dark' : 'light'));
+})();
+
+/* intro splash */
+(function(){
+  const sp = document.getElementById('splash');
+  if(!sp) return;
+  if(reduceMotion){ sp.remove(); return; }
+  setTimeout(() => {
+    sp.classList.add('done');
+    setTimeout(() => sp.remove(), 650);
+  }, 1750);
+})();
+
+/* count-up stats + query plan reveal */
+(function(){
+  const stats = document.querySelectorAll('.cnt');
+  const so = new IntersectionObserver(es => es.forEach(e => {
+    if(!e.isIntersecting) return;
+    so.unobserve(e.target);
+    const el = e.target, target = +el.dataset.n, dur = 900, t0 = performance.now();
+    function step(t){
+      const k = Math.min(1, (t - t0) / dur);
+      el.textContent = Math.round(target * (1 - Math.pow(1 - k, 3)));
+      if(k < 1) requestAnimationFrame(step);
+    }
+    if(reduceMotion){ el.textContent = target; } else { requestAnimationFrame(step); }
+  }), {threshold:.5});
+  stats.forEach(el => so.observe(el));
+
+  const plan = document.getElementById('plan');
+  if(plan){
+    plan.querySelectorAll('.p-row').forEach((r, i) => r.style.transitionDelay = (i * 120) + 'ms');
+    const po = new IntersectionObserver(es => es.forEach(e => {
+      if(e.isIntersecting){ plan.classList.add('vis'); po.disconnect(); }
+    }), {threshold:.2});
+    po.observe(plan);
+  }
+})();
+
+/* scroll progress */
+const prog = document.getElementById('progress');
+addEventListener('scroll', () => {
+  const h = document.documentElement;
+  prog.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+}, {passive:true});
+
+/* typewriter roles */
+(function(){
+  const roles = ['full-stack developer','postgresql enthusiast','USACO gold qualifier','violinist','nonprofit founder','FBLA competitor'];
+  const el = document.getElementById('roletype');
+  if(!el) return;
+  let ri = 0, ci = 0, deleting = false;
+  function tick(){
+    const word = roles[ri];
+    if(!deleting){
+      el.textContent = word.slice(0, ++ci);
+      if(ci === word.length){ deleting = true; return setTimeout(tick, 1600); }
+      return setTimeout(tick, 55 + Math.random()*45);
+    }
+    el.textContent = word.slice(0, --ci);
+    if(ci === 0){ deleting = false; ri = (ri+1) % roles.length; return setTimeout(tick, 350); }
+    setTimeout(tick, 28);
+  }
+  if(reduceMotion){ el.textContent = roles[0]; } else tick();
+})();
+
+/* cursor spotlight on cards */
+document.querySelectorAll('.card,.schema-item,.award,.skill-col,.stat,.contact-btn,.panel').forEach(el => {
+  el.classList.add('spot');
+  el.addEventListener('pointermove', e => {
+    const r = el.getBoundingClientRect();
+    el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  });
+});
+
+/* avatar 3d tilt */
+(function(){
+  const card = document.querySelector('.avatar-card');
+  if(!card || reduceMotion) return;
+  card.addEventListener('pointermove', e => {
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - .5;
+    const y = (e.clientY - r.top) / r.height - .5;
+    card.style.transform = 'perspective(700px) rotateY(' + (x*10) + 'deg) rotateX(' + (-y*10) + 'deg)';
+  });
+  card.addEventListener('pointerleave', () => { card.style.transform = 'perspective(700px)'; });
+})();
+
+/* particle field: drifting data-points + SQL tokens */
+(function(){
+  if(reduceMotion) return;
+  const cv = document.getElementById('fx'), ctx = cv.getContext('2d');
+  let W, H, pts = [];
+  const TOKENS = ['SELECT','JOIN','INDEX','COMMIT','WHERE','VACUUM','ORDER BY','pg_hero','BEGIN;','FETCH'];
+  function resize(){
+    W = cv.width = innerWidth * devicePixelRatio;
+    H = cv.height = innerHeight * devicePixelRatio;
+    cv.style.width = innerWidth + 'px'; cv.style.height = innerHeight + 'px';
+  }
+  resize(); addEventListener('resize', resize);
+  const N = Math.min(60, Math.floor(innerWidth / 24));
+  for(let i = 0; i < N; i++){
+    pts.push({
+      x: Math.random(), y: Math.random(),
+      vx: (Math.random()-.5)*.00016, vy: -.00005 - Math.random()*.00012,
+      r: .8 + Math.random()*1.6,
+      tok: Math.random() < .14 ? TOKENS[Math.floor(Math.random()*TOKENS.length)] : null,
+      a: .12 + Math.random()*.25
+    });
+  }
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    const s = devicePixelRatio;
+    const light = document.body.classList.contains('light');
+    for(const p of pts){
+      p.x += p.vx; p.y += p.vy;
+      if(p.y < -0.03){ p.y = 1.03; p.x = Math.random(); }
+      if(p.x < -0.03) p.x = 1.03; if(p.x > 1.03) p.x = -0.03;
+      const px = p.x*W, py = p.y*H;
+      if(p.tok){
+        ctx.font = (10*s) + 'px JetBrains Mono, monospace';
+        ctx.fillStyle = light ? 'rgba(47,110,168,' + (p.a*.5) + ')' : 'rgba(99,180,240,' + (p.a*.55) + ')';
+        ctx.fillText(p.tok, px, py);
+      } else {
+        ctx.beginPath();
+        ctx.arc(px, py, p.r*s, 0, 7);
+        ctx.fillStyle = light ? 'rgba(40,100,170,' + (p.a*.9) + ')' : 'rgba(120,190,250,' + p.a + ')';
+        ctx.fill();
+      }
+    }
+    ctx.strokeStyle = light ? 'rgba(47,110,168,.07)' : 'rgba(91,163,220,.06)'; ctx.lineWidth = s*.7;
+    for(let i = 0; i < pts.length; i++) for(let j = i+1; j < pts.length; j++){
+      const a = pts[i], b = pts[j];
+      const dx = (a.x-b.x)*W, dy = (a.y-b.y)*H;
+      const d2 = dx*dx + dy*dy, max = (130*s)*(130*s);
+      if(d2 < max){ ctx.beginPath(); ctx.moveTo(a.x*W, a.y*H); ctx.lineTo(b.x*W, b.y*H); ctx.stroke(); }
+    }
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
 </script>
 </body>
 </html>
